@@ -12,24 +12,24 @@ const Container = styled.div`
    padding: 0 4px;
    min-height: 24px;
    background: ${props =>
-      props.selected &&
+      props.highlighted &&
       'linear-gradient(to bottom,rgb(60, 184, 255) 0%,rgb(52, 122, 181) 100%)'};
 `;
 
 const Text = styled.h3`
    margin: 0;
    font-size: 14px;
-   color: ${props => props.selected && 'white'};
+   color: ${props => props.highlighted && 'white'};
 `;
 
-const Button = ({ selected, ...props }) => {
+const Button = ({ highlighted, ...props }) => {
    return (
-      <Container selected={selected}>
-         <Text selected={selected}>{props.children}</Text>
-         {selected && (
+      <Container highlighted={highlighted}>
+         <Text highlighted={highlighted}>{props.children}</Text>
+         {highlighted && (
             <Icon
                name="chevron-right"
-               color={selected ? color.white : color.gray[3]}
+               color={highlighted ? color.white : color.gray[3]}
                size={20}
                strokeWidth={3}
             />

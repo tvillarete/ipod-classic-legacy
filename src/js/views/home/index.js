@@ -3,8 +3,12 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Button } from '../../toolbox';
 import * as Actions from '../actions';
+import * as Views from '../';
+import Preview from './preview';
 
-const Container = styled.div``;
+const Container = styled.div`
+   background: white;
+`;
 
 const mapStateToProps = state => ({
    viewState: state.viewState,
@@ -15,50 +19,59 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class HomeView extends Component {
-   get metadata() {
+   static get metadata() {
       return {
+         component: HomeView,
+         name: 'iPod',
+         preview: Preview,
          sections: [
-            'Music',
-            'Videos',
+            Views.Music,
+            Views.Videos,
+            /*
             'Photos',
             'Extras',
             'Settings',
             'Now Playing',
             'Hello',
+           */
          ],
       };
    }
 
    componentDidUpdate() {
-      const { viewState } = this.props;
-      const { viewStack } = viewState;
-      const len = viewStack.length - 1;
-      const curView = viewStack[len];
-      const { selectedIndex } = curView.props;
+      const { viewState, index } = this.props;
+      const { scrollIndexStack, selected } = viewState;
+      const { sections } = HomeView.metadata;
+      const scrollIndex = scrollIndexStack[scrollIndexStack.length - 1];
+      console.log(scrollIndex, scrollIndexStack.length);
 
-      if (selectedIndex > -1) {
+      if (selected && index === scrollIndexStack.length - 1) {
          this.props.pushView({
-            name: this.metadata.sections[selectedIndex],
+            component: sections[scrollIndex],
             props: {
-               scrollIndex: 0
+               hi: true
             }
-         });
+         })
       }
    }
 
    render() {
-      const { viewState } = this.props;
-      const { sections } = this.metadata;
-      const scrollIndex =
-         viewState.viewStack[viewState.viewStack.length - 1].props.scrollIndex;
+      const { viewState, index } = this.props;
+      const { scrollIndexStack } = viewState;
+      const { sections } = HomeView.metadata;
+      const scrollIndex = scrollIndexStack[index];
 
       return (
          <Container>
             {sections.map((section, index) => {
-               const selected = index === scrollIndex;
+               const { metadata } = section;
+               const { name } = metadata;
+               const highlighted = index === scrollIndex;
                return (
-                  <Button selected={selected} key={`section-${section}`}>
-                     {section}
+                  <Button
+                     highlighted={highlighted}
+                     key={`section-${section}-${index}`}>
+                     {name}
                   </Button>
                );
             })}
@@ -67,4 +80,7 @@ class HomeView extends Component {
    }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeView);
+export default connect(
+   mapStateToProps,
+   mapDispatchToProps,
+)(HomeView);

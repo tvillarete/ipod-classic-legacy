@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import Knob from 'react-canvas-knob';
 import { constants } from './toolbox';
-import * as Actions from './screen/actions';
+import * as Actions from './views/actions';
 
 const { color } = constants;
 
@@ -15,7 +15,6 @@ const Container = styled.div`
    height: 14em;
    width: 14em;
    margin: 3.5em auto;
-   background: white;
 `;
 
 const CenterButton = styled.div`
@@ -23,11 +22,19 @@ const CenterButton = styled.div`
    height: 36%;
    width: 36%;
    border-radius: 50%;
-   border: 1px solid lightgray;
 
    :active {
       background: ${color.gray[2]};
    }
+`;
+
+const MenuButton = styled.h3`
+   position: absolute;
+   top: 0;
+   left: 0;
+   height: 3em;
+   width: 3em;
+   border-radius: 50%;
 `;
 
 const mapStateToProps = state => ({
@@ -37,6 +44,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
    scrollRight: () => dispatch(Actions.scrollRight()),
    scrollLeft: () => dispatch(Actions.scrollLeft()),
+   popView: () => dispatch(Actions.popView()),
    select: index => dispatch(Actions.select(index)),
 });
 
@@ -47,29 +55,75 @@ class Wheel extends Component {
 
    select = () => {
       const { viewState } = this.props;
-      const { viewStack } = viewState;
-      const len = viewStack.length - 1;
-      const index = viewStack[len].props.scrollIndex;
+      const { scrollIndexStack } = viewState;
+      const index = scrollIndexStack[scrollIndexStack.length - 1];
 
       this.props.select(index);
    };
 
    handleScroll = val => {
-      if (val === this.state.count) {
+      const { count } = this.state;
+
+      if (Math.abs(val - count) > 5 || Math.abs(val - count) === 0) {
          return;
-      } else if (val > this.state.count) {
+      } else if (val > count || (val < count && count === 100)) {
+         this.setState({ scrolling: true });
          this.props.scrollRight();
-      } else if (val < this.state.count) {
+      } else if (val < count || (val > count && count === 0)) {
+         this.setState({ scrolling: true });
          this.props.scrollLeft();
       }
       this.setState({ count: val });
    };
 
-   render() {
-      const { count } = this.state;
+   componentDidMount() {
+      this.getWheelListener();
+   }
 
+   checkWheelClick = e => {
+      /*
+      const { viewState } = this.props;
+      const { viewStack } = viewState;
+      const x = e.offsetX;
+      const y = e.offsetY;
+      if (e.target.nodeName !== 'CANVAS' || this.state.scrolling) {
+         this.setState({ scrolling: false });
+         return;
+      }
+
+      if (y < 60 && viewStack.length > 1) {
+         this.props.popView();
+      } else {
+
+      }
+        */
+   };
+
+   handleMenuClick = () => {
+      this.props.popView();
+   }
+
+   getWheelListener() {
+      this.scrollwheel = document.querySelector('#scrollwheel');
+
+      if (this.wheelListener) {
+         this.scrollwheel.removeEventListener('mouseup', this.checkWheelClick);
+      }
+
+      this.wheelListener = this.scrollwheel.addEventListener(
+         'mouseup',
+         this.checkWheelClick,
+      );
+   }
+
+   componentDidUpdate() {
+      this.getWheelListener();
+   }
+
+   render() {
       return (
-         <Container>
+         <Container id="scrollwheel">
+            <MenuButton onClick={this.props.popView}>Menu</MenuButton>
             <CenterButton onClick={this.select} />
             <Knob
                value={this.state.count}
@@ -77,7 +131,7 @@ class Wheel extends Component {
                max={100}
                step={5}
                fgColor="transparent"
-               bgColor={color.gray[3]}
+               bgColor={color.white}
                thickness={0.6}
                displayInput={false}
                onChange={this.handleScroll}
@@ -86,6 +140,7 @@ class Wheel extends Component {
       );
    }
 }
+            //<div onClick={this.handleMenuClick}>Menu</div>
 
 export default connect(
    mapStateToProps,

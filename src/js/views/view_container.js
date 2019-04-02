@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { connect } from 'react-redux';
 import Header from './header';
-import * as Views from './';
 
 const Container = styled.div`
    display: flex;
@@ -14,6 +13,23 @@ const Container = styled.div`
    overflow: hidden;
 `;
 
+const ViewStackContainer = styled.div`
+   position: relative;
+   overflow: hidden;
+   height: 92%;
+`;
+
+const TransitionContainer = styled.div`
+   position: absolute;
+   top: 0;
+   bottom: 0;
+   left: 0;
+   right: 0;
+   background: white;
+
+   ${props => props.topOfStack && css``};
+`;
+
 const MenuStack = styled.div`
    z-index: 1;
    flex: 1;
@@ -21,46 +37,16 @@ const MenuStack = styled.div`
    box-shadow: 0 0 24px black;
 `;
 
-const Preview = styled.div`
-   flex: 1;
-   background: url('https://colleenplays.files.wordpress.com/2017/07/a-flamemy-love-a-frequency-album-cover.jpg')
-      no-repeat center;
-   animation: kenBurns 5s infinite;
+const PreviewContainer = styled.div`
+   position: relative;
+   width: 50%;
 
-   @keyframes kenBurns {
-      0% {
-         -webkit-transform-origin: bottom left;
-         -moz-transform-origin: bottom left;
-         -ms-transform-origin: bottom left;
-         -o-transform-origin: bottom left;
-         transform-origin: bottom left;
-         transform: scale(1);
-         -ms-transform: scale(1);
-         /* IE 9 */
-
-         -webkit-transform: scale(1);
-         /* Safari and Chrome */
-
-         -o-transform: scale(1);
-         /* Opera */
-
-         -moz-transform: scale(1);
-         /* Firefox */
-      }
-      100% {
-         transform: scale(1.2);
-         -ms-transform: scale(1.2);
-         /* IE 9 */
-
-         -webkit-transform: scale(1.2);
-         /* Safari and Chrome */
-
-         -o-transform: scale(1.2);
-         /* Opera */
-
-         -moz-transform: scale(1.2);
-         /* Firefox */
-      }
+   > div {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
    }
 `;
 
@@ -69,19 +55,39 @@ const mapStateToProps = state => ({
 });
 
 class ViewContainer extends Component {
+   constructor(props) {
+      super(props);
+      this.state = {
+         changingPreview: false,
+      };
+   }
+
    render() {
       const { viewState } = this.props;
-      const { viewStack } = viewState;
-      const len = viewStack.length - 1;
-      const View = Views[viewStack[len].name];
+      const { viewStack, scrollIndexStack } = viewState;
+      const curView = viewStack[viewStack.length - 1];
+      const scrollIndex = scrollIndexStack[scrollIndexStack.length - 1];
+      const Preview =
+         curView.component.metadata.sections[scrollIndex].metadata.preview;
 
       return (
          <Container>
             <MenuStack>
                <Header />
-               <View />
+               <ViewStackContainer>
+                  {viewStack.map((View, index) => (
+                     <TransitionContainer
+                        key={`view-${index}`}
+                        index={index}
+                        topOfStack={index === viewStack.length - 1}>
+                        <View.component index={index} {...View.props} />
+                     </TransitionContainer>
+                  ))}
+               </ViewStackContainer>
             </MenuStack>
-            <Preview />
+            <PreviewContainer>
+               <Preview />
+            </PreviewContainer>
          </Container>
       );
    }

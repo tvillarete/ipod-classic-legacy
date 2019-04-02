@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import ViewContainer from './views/view_container';
+import { constants } from './toolbox';
 import Wheel from './wheel';
+
+const { color } = constants;
 
 const Container = styled.div`
    position: fixed;
@@ -21,17 +24,24 @@ const Shell = styled.div`
    width: 23em;
    border-radius: 30px;
    border: 1px solid gray;
-   background: white;
+   background: ${color.gray[3]};
+
+   @media screen and (max-width: 800px) and (max-height: 800px) {
+      height: 100vh;
+      width: 100vw;
+      border: none;
+      border-radius: 0;
+   }
 `;
 
 class Ipod extends Component {
    render() {
       return (
          <Container>
-         <Shell>
-            <ViewContainer />
-            <Wheel />
-         </Shell>
+            <Shell>
+               <ViewContainer />
+               <Wheel />
+            </Shell>
          </Container>
       );
    }

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Button } from '../../toolbox';
-import * as Views from '../';
 import Preview from './preview';
 
 const Container = styled.div`
@@ -16,11 +15,10 @@ const mapStateToProps = state => ({
 class MusicView extends Component {
    static get metadata() {
       return {
-         name: 'Music',
+         name: 'Artists',
          preview: Preview,
          sections: [
-            Views.Artists,
-            Views.Albums,
+
          ],
       };
    }

@@ -13,14 +13,12 @@ const mapStateToProps = state => ({
    viewState: state.viewState,
 });
 
-class MusicView extends Component {
+class VideosView extends Component {
    static get metadata() {
       return {
-         name: 'Music',
+         name: 'Videos',
          preview: Preview,
          sections: [
-            Views.Artists,
-            Views.Albums,
          ],
       };
    }
@@ -28,7 +26,7 @@ class MusicView extends Component {
    render() {
       const { viewState, index } = this.props;
       const { scrollIndexStack } = viewState;
-      const { sections } = MusicView.metadata;
+      const { sections } = VideosView.metadata;
       const scrollIndex = scrollIndexStack[index];
 
       return (
@@ -50,4 +48,4 @@ class MusicView extends Component {
    }
 }
 
-export default connect(mapStateToProps)(MusicView);
+export default connect(mapStateToProps)(VideosView);

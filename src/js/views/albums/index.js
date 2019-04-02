@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Button } from '../../toolbox';
-import * as Views from '../';
 import Preview from './preview';
 
 const Container = styled.div`
@@ -13,14 +12,13 @@ const mapStateToProps = state => ({
    viewState: state.viewState,
 });
 
-class MusicView extends Component {
+class AlbumsView extends Component {
    static get metadata() {
       return {
-         name: 'Music',
+         name: 'Albums',
          preview: Preview,
          sections: [
-            Views.Artists,
-            Views.Albums,
+
          ],
       };
    }
@@ -28,7 +26,7 @@ class MusicView extends Component {
    render() {
       const { viewState, index } = this.props;
       const { scrollIndexStack } = viewState;
-      const { sections } = MusicView.metadata;
+      const { sections } = AlbumsView.metadata;
       const scrollIndex = scrollIndexStack[index];
 
       return (
@@ -50,4 +48,4 @@ class MusicView extends Component {
    }
 }
 
-export default connect(mapStateToProps)(MusicView);
+export default connect(mapStateToProps)(AlbumsView);

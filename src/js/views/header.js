@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { constants } from '../toolbox';
-
-const { color } = constants;
 
 const Container = styled.div`
    display: flex;
@@ -22,14 +20,22 @@ const Text = styled.h3`
    font-size: 14px;
 `;
 
+const mapStateToProps = state => ({
+   viewState: state.viewState,
+});
+
 class Header extends Component {
    render() {
+      const { viewState } = this.props;
+      const { viewStack } = viewState;
+      const viewTitle = viewStack[viewStack.length - 1].component.metadata.name;
+
       return (
          <Container>
-            <Text>iPod</Text>
+            <Text>{viewTitle}</Text>
          </Container>
       );
    }
 }
 
-export default Header;
+export default connect(mapStateToProps)(Header);

@@ -5,9 +5,20 @@ import { Button } from '../../toolbox';
 import Preview from './preview';
 import * as ApiActions from '../../api/actions';
 import store from '../../store';
+import Header from '../header';
+import Coverflow from 'react-coverflow';
 
 const Container = styled.div`
+   position: absolute;
+   top: 0;
+   bottom: 0;
+   left: 0;
+   right: 0;
    background: white;
+
+   .coverflow__container__1P-xE {
+      background: white;
+   }
 `;
 
 const mapStateToProps = state => ({
@@ -21,15 +32,7 @@ const mapDispatchToProps = dispatch => ({
 
 let artistList = [];
 
-class ArtistsView extends Component {
-   static get metadata() {
-      return {
-         name: 'Artists',
-         preview: Preview,
-         sections: artistList,
-      };
-   }
-
+class CoverFlow extends Component {
    static getDerivedStateFromProps(nextProps, prevState) {
       const { apiState, viewState, index } = nextProps;
       const { scrollOffset } = prevState;
@@ -68,9 +71,6 @@ class ArtistsView extends Component {
 
    componentDidUpdate() {
       const { scrollOffset } = this.state;
-
-      console.log("Scrolltop: ", scrollOffset * 10);
-      document.getElementById('artistsContainer').scrollTop = scrollOffset * 10;
    }
 
    get scrollIndex() {
@@ -82,21 +82,23 @@ class ArtistsView extends Component {
 
    render() {
       const { apiState, viewState, index } = this.props;
-      const { sections } = ArtistsView.metadata;
+      console.log("Scrollindex:", this.scrollIndex);
 
       return (
-         <Container id="artistsContainer">
-            {sections &&
-               sections.map((artist, index) => {
-                  const highlighted = index === this.scrollIndex;
-                  return (
-                     <Button
-                        highlighted={highlighted}
-                        key={`artist-${artist}-${index}`}>
-                        {artist}
-                     </Button>
-                  );
-               })}
+         <Container className="cover-flow">
+            <Header />
+            <Coverflow
+               displayQuantityOfSide={1}
+               navigation={false}
+               clickable={false}
+               active={0}
+            >
+               <img src="https://www.w3schools.com/html/pic_trulli.jpg" />
+               <img src="https://www.w3schools.com/html/pic_trulli.jpg" />
+               <img src="https://www.w3schools.com/html/pic_trulli.jpg" />
+               <img src="https://www.w3schools.com/html/pic_trulli.jpg" />
+               <img src="https://www.w3schools.com/html/pic_trulli.jpg" />
+            </Coverflow>
          </Container>
       );
    }
@@ -105,4 +107,4 @@ class ArtistsView extends Component {
 export default connect(
    mapStateToProps,
    mapDispatchToProps,
-)(ArtistsView);
+)(CoverFlow);

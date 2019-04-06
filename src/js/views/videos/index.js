@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Button } from '../../toolbox';
-import * as Views from '../';
 import Preview from './preview';
 
 const Container = styled.div`

@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { Button } from '../../toolbox';
 import Preview from './preview';
 import * as ApiActions from '../../api/actions';
-import store from '../../store';
 
 const Container = styled.div`
    background: white;
@@ -69,7 +67,6 @@ class CoverFlowView extends Component {
    componentDidUpdate() {
       const { scrollOffset } = this.state;
 
-      console.log("Scrolltop: ", scrollOffset * 10);
       document.getElementById('coverFlowContainer').scrollTop = scrollOffset * 10;
    }
 

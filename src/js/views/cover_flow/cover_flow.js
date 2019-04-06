@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { Button } from '../../toolbox';
-import Preview from './preview';
 import * as ApiActions from '../../api/actions';
-import store from '../../store';
 import Header from '../header';
 import Coverflow from 'react-coverflow';
 
@@ -70,7 +67,7 @@ class CoverFlow extends Component {
    }
 
    componentDidUpdate() {
-      const { scrollOffset } = this.state;
+      // const { scrollOffset } = this.state;
    }
 
    get scrollIndex() {
@@ -81,9 +78,6 @@ class CoverFlow extends Component {
    }
 
    render() {
-      const { apiState, viewState, index } = this.props;
-      console.log("Scrollindex:", this.scrollIndex);
-
       return (
          <Container className="cover-flow">
             <Header />
@@ -93,11 +87,7 @@ class CoverFlow extends Component {
                clickable={false}
                active={0}
             >
-               <img src="https://www.w3schools.com/html/pic_trulli.jpg" />
-               <img src="https://www.w3schools.com/html/pic_trulli.jpg" />
-               <img src="https://www.w3schools.com/html/pic_trulli.jpg" />
-               <img src="https://www.w3schools.com/html/pic_trulli.jpg" />
-               <img src="https://www.w3schools.com/html/pic_trulli.jpg" />
+               <img alt="hi" src="https://www.w3schools.com/html/pic_trulli.jpg" />
             </Coverflow>
          </Container>
       );

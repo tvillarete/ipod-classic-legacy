@@ -21,6 +21,7 @@ const Container = styled.div`
 const Shell = styled.div`
    position: relative;
    height: 38em;
+   max-height: 100%;
    width: 23em;
    border-radius: 30px;
    border: 1px solid gray;

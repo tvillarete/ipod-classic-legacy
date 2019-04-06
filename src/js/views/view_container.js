@@ -15,7 +15,7 @@ const Container = styled.div`
    border-radius: 8px;
    overflow: hidden;
    animation: fadeFromBlack 0.5s;
-   
+
    > div {
       user-select: none;
    }
@@ -180,7 +180,7 @@ class ViewContainer extends Component {
       }
       return (
          <Container>
-            <CoverFlow className="cover-flow" />
+            <CoverFlow isActive={inCoverFlow} />
             <MenuStack isHidden={inCoverFlow} className="menu-stack">
                <Header className="header" />
                <ViewStackContainer>

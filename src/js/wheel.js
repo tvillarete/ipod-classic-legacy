@@ -22,6 +22,7 @@ const CenterButton = styled.div`
    height: 36%;
    width: 36%;
    border-radius: 50%;
+   box-shadow: inset 0 1em 3em #bfbfbf;
 
    :active {
       background: ${color.gray[2]};
@@ -121,6 +122,7 @@ class Wheel extends Component {
    }
 
    render() {
+      console.log(this.props.viewState.scrollIndexStack)
       return (
          <Container id="scrollwheel">
             <MenuButton onClick={this.props.popView}>Menu</MenuButton>

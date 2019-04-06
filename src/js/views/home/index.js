@@ -43,7 +43,6 @@ class HomeView extends Component {
       const { scrollIndexStack, selected } = viewState;
       const { sections } = HomeView.metadata;
       const scrollIndex = scrollIndexStack[scrollIndexStack.length - 1];
-      console.log(scrollIndex, scrollIndexStack.length);
 
       if (selected && index === scrollIndexStack.length - 1) {
          this.props.pushView({

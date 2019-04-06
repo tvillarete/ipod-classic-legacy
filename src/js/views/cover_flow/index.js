@@ -21,10 +21,10 @@ const mapDispatchToProps = dispatch => ({
 
 let artistList = [];
 
-class ArtistsView extends Component {
+class CoverFlowView extends Component {
    static get metadata() {
       return {
-         name: 'Artists',
+         name: 'Cover Flow',
          preview: Preview,
          sections: artistList,
       };
@@ -70,33 +70,13 @@ class ArtistsView extends Component {
       const { scrollOffset } = this.state;
 
       console.log("Scrolltop: ", scrollOffset * 10);
-      document.getElementById('artistsContainer').scrollTop = scrollOffset * 10;
-   }
-
-   get scrollIndex() {
-      const { viewState, index } = this.props;
-      const { scrollIndexStack } = viewState;
-
-      return scrollIndexStack[index];
+      document.getElementById('coverFlowContainer').scrollTop = scrollOffset * 10;
    }
 
    render() {
-      const { apiState, viewState, index } = this.props;
-      const { sections } = ArtistsView.metadata;
-
       return (
-         <Container id="artistsContainer">
-            {sections &&
-               sections.map((artist, index) => {
-                  const highlighted = index === this.scrollIndex;
-                  return (
-                     <Button
-                        highlighted={highlighted}
-                        key={`artist-${artist}-${index}`}>
-                        {artist}
-                     </Button>
-                  );
-               })}
+         <Container id="coverFlowContainer">
+
          </Container>
       );
    }
@@ -105,4 +85,4 @@ class ArtistsView extends Component {
 export default connect(
    mapStateToProps,
    mapDispatchToProps,
-)(ArtistsView);
+)(CoverFlowView);

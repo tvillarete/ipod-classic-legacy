@@ -25,6 +25,7 @@ const Shell = styled.div`
    border-radius: 30px;
    border: 1px solid gray;
    background: ${color.gray[3]};
+   box-shadow: inset 0 0 2.4em #555;
 
    @media screen and (max-width: 800px) and (max-height: 800px) {
       height: 100vh;

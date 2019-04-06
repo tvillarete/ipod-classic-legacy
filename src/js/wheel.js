@@ -122,7 +122,6 @@ class Wheel extends Component {
    }
 
    render() {
-      console.log(this.props.viewState.scrollIndexStack)
       return (
          <Container id="scrollwheel">
             <MenuButton onClick={this.props.popView}>Menu</MenuButton>

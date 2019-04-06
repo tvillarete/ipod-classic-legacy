@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { Button } from '../../toolbox';
 import Preview from './preview';
 import * as ApiActions from '../../api/actions';
-import store from '../../store';
 
 const Container = styled.div`
    background: white;
@@ -69,7 +68,6 @@ class ArtistsView extends Component {
    componentDidUpdate() {
       const { scrollOffset } = this.state;
 
-      console.log("Scrolltop: ", scrollOffset * 10);
       document.getElementById('artistsContainer').scrollTop = scrollOffset * 10;
    }
 
@@ -81,7 +79,6 @@ class ArtistsView extends Component {
    }
 
    render() {
-      const { apiState, viewState, index } = this.props;
       const { sections } = ArtistsView.metadata;
 
       return (

@@ -2,7 +2,7 @@
   "name": "ipod",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://users.csc.calpoly.edu/~tvillare/ipod/",
+  "homepage": "http://tannerv.com/ipod",
   "dependencies": {
     "feather-icons": "^4.17.0",
     "react": "^16.7.0",

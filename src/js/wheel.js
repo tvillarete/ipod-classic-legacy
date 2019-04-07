@@ -87,24 +87,16 @@ class Wheel extends Component {
       return scrollIndexStack[scrollIndexStack.length - 1];
    }
 
-   componentDidMount() {
-      const scrollWheel = document.querySelector('.scrollwheel');
-      scrollWheel.title = '';
-
-      scrollWheel.addEventListener('mousedown', () => {
-         this.setState({ tempScrollIndex: this.scrollIndex });
-      });
-
-      scrollWheel.addEventListener('mouseup', e => {
-         if (this.state.tempScrollIndex === this.scrollIndex) {
-            this.handleWheelClick(e);
-         }
-         this.setState({ tempScrollIndex: null });
-      });
-   }
-
-   handleWheelClick = e => {
-      const { offsetX, offsetY } = e;
+   handleWheelClick = (e, isMobile) => {
+      let offsetX, offsetY = null;
+      if (isMobile) {
+         const rect = e.target.getBoundingClientRect();
+         offsetX = e.targetTouches[0].pageX - rect.left;
+         offsetY = e.targetTouches[0].pageY - rect.top;
+      } else {
+         offsetX = e.offsetX;
+         offsetY = e.offsetY;
+      }
 
       if (offsetX >= 60 && offsetX < 130) {
          if (offsetY < 40) {
@@ -120,6 +112,36 @@ class Wheel extends Component {
          }
       }
    };
+
+   handleMouseDown = e => {
+      this.setState({ tempScrollIndex: this.scrollIndex });
+      this.lastMove = e;
+   }
+
+   componentDidMount() {
+      const scrollWheel = document.querySelector('.scrollwheel');
+      scrollWheel.title = '';
+
+      scrollWheel.addEventListener('mousedown', this.handleMouseDown);
+      scrollWheel.addEventListener('touchstart', this.handleMouseDown);
+      scrollWheel.addEventListener('touchmove', e => {
+         this.lastMove = e;
+      });
+      scrollWheel.addEventListener('mouseup', e => {
+         if (this.state.tempScrollIndex === this.scrollIndex) {
+            this.handleWheelClick(e);
+         }
+         this.setState({ tempScrollIndex: null });
+      });
+
+      scrollWheel.addEventListener('touchend', e => {
+         if (this.state.tempScrollIndex === this.scrollIndex) {
+            this.handleWheelClick(this.lastMove, /* isMobile */ true);
+         }
+         this.setState({ tempScrollIndex: null });
+         this.lastMove = null;
+      });
+   }
 
    render() {
       return (

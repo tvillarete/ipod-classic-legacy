@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import Knob from 'react-canvas-knob';
-import { constants } from './toolbox';
+import { Knob, constants } from './toolbox';
 import * as Actions from './views/actions';
 
 const { color } = constants;

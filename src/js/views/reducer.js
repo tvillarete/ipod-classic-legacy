@@ -2,6 +2,7 @@ import HomeView from './home';
 
 const initialState = {
    viewStack: [{ component: HomeView, props: {} }],
+   fullWidthViewStack: [],
    // Each view has a scrollIndex attached to it.
    scrollIndexStack: [0],
    selected: false,
@@ -28,6 +29,22 @@ const viewReducer = (state = initialState, action) => {
             ? {
                  ...state,
                  viewStack: state.viewStack.slice(0, -1),
+                 scrollIndexStack: state.scrollIndexStack.slice(0, -1),
+                 selected: false,
+              }
+            : state;
+      case 'PUSH_FULL_VIEW':
+         return {
+            ...state,
+            viewStack: [...state.viewStack, action.view],
+            scrollIndexStack: [...state.scrollIndexStack, 0],
+            selected: false,
+         };
+      case 'POP_FULL_VIEW':
+         return state.fullWidthViewStack.length > 1
+            ? {
+                 ...state,
+                 viewStack: state.fullWidthViewStack.slice(0, -1),
                  scrollIndexStack: state.scrollIndexStack.slice(0, -1),
                  selected: false,
               }

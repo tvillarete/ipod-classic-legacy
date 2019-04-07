@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import styled, { css } from "styled-components";
-import { connect } from "react-redux";
-import Header from "./header";
-import DefaultPreview from "./default_preview";
-import CoverFlow from "./cover_flow/cover_flow";
+import React, { Component } from 'react';
+import styled, { css } from 'styled-components';
+import { connect } from 'react-redux';
+import Header from './header';
+import DefaultPreview from './default_preview';
+import CoverFlow from './cover_flow/cover_flow';
 
 const Container = styled.div`
    position: relative;
@@ -35,7 +35,7 @@ const ViewStackContainer = styled.div`
 
 const TransitionContainer = styled.div`
    position: absolute;
-   display: ${props => props.isHidden && "none"};
+   display: ${props => props.isHidden && 'none'};
    top: 0;
    bottom: 0;
    left: 0;
@@ -121,7 +121,7 @@ const PreviewContainer = styled.div`
 `;
 
 const mapStateToProps = state => ({
-   viewState: state.viewState
+   viewState: state.viewState,
 });
 
 class ViewContainer extends Component {
@@ -130,7 +130,7 @@ class ViewContainer extends Component {
       this.state = {
          viewStack: props.viewState.viewStack,
          changingPreview: false,
-         exiting: false
+         exiting: false,
       };
    }
 
@@ -141,7 +141,7 @@ class ViewContainer extends Component {
 
       return {
          exiting,
-         viewStack: exiting ? prevViewStack : newViewStack
+         viewStack: exiting ? prevViewStack : newViewStack,
       };
    }
 
@@ -152,7 +152,7 @@ class ViewContainer extends Component {
       setTimeout(() => {
          this.setState({
             viewStack,
-            exiting: false
+            exiting: false,
          });
       }, 350);
    }
@@ -170,13 +170,13 @@ class ViewContainer extends Component {
       const curView = viewStack[viewStack.length - 1];
       const scrollIndex = scrollIndexStack[scrollIndexStack.length - 1];
       const inCoverFlow =
-         curView.component.metadata.name === "Cover Flow" && !exiting;
+         curView.component.metadata.name === 'Cover Flow' && !exiting;
       let Preview = null;
       try {
          Preview =
             curView.component.metadata.sections[scrollIndex].metadata.preview;
       } catch {
-         console.log("This selection has no preview");
+         console.log('This selection has no preview');
       }
       return (
          <Container>
@@ -186,14 +186,13 @@ class ViewContainer extends Component {
                <ViewStackContainer>
                   {viewStack.map((View, index) => (
                      <TransitionContainer
-                        isHidden={View.component.metadata.name === "Cover Flow"}
+                        isHidden={View.component.metadata.name === 'Cover Flow'}
                         key={`view-${index}`}
                         index={index}
                         exiting={exiting}
                         belowTopView={index <= viewStack.length - 2}
                         secondFromTop={index === viewStack.length - 2}
-                        topOfStack={index === viewStack.length - 1}
-                     >
+                        topOfStack={index === viewStack.length - 1}>
                         <View.component index={index} {...View.props} />
                      </TransitionContainer>
                   ))}

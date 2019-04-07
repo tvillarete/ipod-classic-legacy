@@ -19,7 +19,7 @@ const mapDispatchToProps = dispatch => ({
 
 let artistList = [];
 
-class CoverFlowView extends Component {
+class CoverFlowContainer extends Component {
    static get metadata() {
       return {
          name: 'Cover Flow',
@@ -82,4 +82,4 @@ class CoverFlowView extends Component {
 export default connect(
    mapStateToProps,
    mapDispatchToProps,
-)(CoverFlowView);
+)(CoverFlowContainer);

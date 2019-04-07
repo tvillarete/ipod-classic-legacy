@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { connect } from 'react-redux';
 import Header from './header';
 import DefaultPreview from './default_preview';
-import CoverFlow from './cover_flow/cover_flow';
+import CoverFlowContainer from './cover_flow/container';
 
 const Container = styled.div`
    position: relative;
@@ -180,7 +180,7 @@ class ViewContainer extends Component {
       }
       return (
          <Container>
-            <CoverFlow isActive={inCoverFlow} />
+            <CoverFlowContainer isActive={inCoverFlow} />
             <MenuStack isHidden={inCoverFlow} className="menu-stack">
                <Header className="header" />
                <ViewStackContainer>

@@ -71,23 +71,25 @@ class CoverFlow extends Component {
    }
 
    get scrollIndex() {
-      const { viewState, index } = this.props;
+      const { viewState } = this.props;
       const { scrollIndexStack } = viewState;
 
-      return scrollIndexStack[index];
+      return scrollIndexStack[scrollIndexStack.length - 1];
    }
 
    render() {
-      return (
+      return this.props.isActive && (
          <Container className="cover-flow">
             <Header />
             <Coverflow
                displayQuantityOfSide={1}
                navigation={false}
                clickable={false}
-               active={0}
+               active={this.scrollIndex}
             >
-               <img alt="hi" src="https://www.w3schools.com/html/pic_trulli.jpg" />
+               <img alt="album" src="https://www.w3schools.com/html/pic_trulli.jpg" />
+               <img alt="album2" src="https://www.w3schools.com/html/pic_trulli.jpg" />
+               <img alt="album3" src="https://www.w3schools.com/html/pic_trulli.jpg" />
             </Coverflow>
          </Container>
       );

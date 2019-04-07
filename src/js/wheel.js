@@ -29,13 +29,16 @@ const CenterButton = styled.div`
    }
 `;
 
-const MenuButton = styled.h3`
+const WheelButton = styled.img`
    position: absolute;
-   top: 0;
-   left: 0;
-   height: 3em;
-   width: 3em;
-   border-radius: 50%;
+   margin: ${props => props.margin};
+   top: ${props => props.top};
+   bottom: ${props => props.bottom};
+   left: ${props => props.left};
+   right: ${props => props.right};
+   user-select: none;
+   pointer-events: none;
+   max-height: 13px;
 `;
 
 const mapStateToProps = state => ({
@@ -52,6 +55,7 @@ const mapDispatchToProps = dispatch => ({
 class Wheel extends Component {
    state = {
       count: 0,
+      tempScrollIndex: null,
    };
 
    select = () => {
@@ -77,54 +81,54 @@ class Wheel extends Component {
       this.setState({ count: val });
    };
 
-   componentDidMount() {
-      this.getWheelListener();
-   }
-
-   checkWheelClick = e => {
-      /*
+   get scrollIndex() {
       const { viewState } = this.props;
-      const { viewStack } = viewState;
-      const x = e.offsetX;
-      const y = e.offsetY;
-      if (e.target.nodeName !== 'CANVAS' || this.state.scrolling) {
-         this.setState({ scrolling: false });
-         return;
-      }
+      const { scrollIndexStack } = viewState;
 
-      if (y < 60 && viewStack.length > 1) {
-         this.props.popView();
-      } else {
+      return scrollIndexStack[scrollIndexStack.length - 1];
+   }
 
+   componentDidMount() {
+      const scrollWheel = document.querySelector('.scrollwheel');
+      scrollWheel.title = '';
+
+      scrollWheel.addEventListener('mousedown', () => {
+         this.setState({ tempScrollIndex: this.scrollIndex });
+      });
+
+      scrollWheel.addEventListener('mouseup', e => {
+         if (this.state.tempScrollIndex === this.scrollIndex) {
+            this.handleWheelClick(e);
+         }
+         this.setState({ tempScrollIndex: null });
+      });
+   }
+
+   handleWheelClick = e => {
+      const { offsetX, offsetY } = e;
+
+      if (offsetX >= 60 && offsetX < 130) {
+         if (offsetY < 40) {
+            this.props.popView();
+         } else if (offsetY >= 160) {
+            console.log("Clicked play");
+         }
+      } else if (offsetY >= 80 && offsetY < 120) {
+         if (offsetX >= 160) {
+            console.log("Clicked skip");
+         } else if (offsetX < 90) {
+            console.log("Clicked back");
+         }
       }
-        */
    };
-
-   handleMenuClick = () => {
-      this.props.popView();
-   }
-
-   getWheelListener() {
-      this.scrollwheel = document.querySelector('#scrollwheel');
-
-      if (this.wheelListener) {
-         this.scrollwheel.removeEventListener('mouseup', this.checkWheelClick);
-      }
-
-      this.wheelListener = this.scrollwheel.addEventListener(
-         'mouseup',
-         this.checkWheelClick,
-      );
-   }
-
-   componentDidUpdate() {
-      this.getWheelListener();
-   }
 
    render() {
       return (
-         <Container id="scrollwheel">
-            <MenuButton onClick={this.props.popView}>Menu</MenuButton>
+         <Container>
+            <WheelButton top="24px" margin="0 auto" src="menu.svg" />
+            <WheelButton right="24px" margin="auto 0" src="fast_forward.svg" />
+            <WheelButton left="24px" margin="auto 0" src="rewind.svg" />
+            <WheelButton bottom="24px" margin="0 auto" src="play_pause.svg" />
             <CenterButton onClick={this.select} />
             <Knob
                value={this.state.count}
@@ -135,13 +139,13 @@ class Wheel extends Component {
                bgColor={color.white}
                thickness={0.6}
                displayInput={false}
+               canvasClassName="scrollwheel"
                onChange={this.handleScroll}
             />
          </Container>
       );
    }
 }
-            //<div onClick={this.handleMenuClick}>Menu</div>
 
 export default connect(
    mapStateToProps,

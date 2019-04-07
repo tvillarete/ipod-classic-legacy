@@ -71,7 +71,7 @@ class CoverFlow extends Component {
    }
 
    get scrollIndex() {
-      const { viewState, index } = this.props;
+      const { viewState } = this.props;
       const { scrollIndexStack } = viewState;
 
       return scrollIndexStack[scrollIndexStack.length - 1];

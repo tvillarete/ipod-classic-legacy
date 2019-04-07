@@ -18,11 +18,11 @@ const apiReducer = (state = initialState, action) => {
          return {
             ...state,
             artistData: {
-               ...state.data.artistData,
+               ...state.artistData,
                [action.name]: action.albums,
             },
             albumData: {
-               ...state.data.albumData,
+               ...state.albumData,
                ...action.albumData,
             },
          };
@@ -30,7 +30,7 @@ const apiReducer = (state = initialState, action) => {
          return {
             ...state,
             albumData: {
-               ...state.data.albumData,
+               ...state.albumData,
                ...action.albumData,
             },
             albums: action.albums,
@@ -39,7 +39,7 @@ const apiReducer = (state = initialState, action) => {
          return {
             ...state,
             albumData: {
-               ...state.data.albumData,
+               ...state.albumData,
                [action.album]: action.tracks,
             },
          };

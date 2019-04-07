@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import * as ApiActions from '../../api/actions';
 import Header from '../header';
-import Coverflow from 'react-coverflow';
+import { CoverFlow } from '../../toolbox';
 
 const Container = styled.div`
    position: absolute;
@@ -29,7 +29,7 @@ const mapDispatchToProps = dispatch => ({
 
 let artistList = [];
 
-class CoverFlow extends Component {
+class CoverFlowContainer extends Component {
    static getDerivedStateFromProps(nextProps, prevState) {
       const { apiState, viewState, index } = nextProps;
       const { scrollOffset } = prevState;
@@ -46,7 +46,7 @@ class CoverFlow extends Component {
                ? scrollOffset - 1
                : scrollIndex > scrollOffset + 9
                   ? scrollOffset + 1
-               : scrollOffset,
+                  : scrollOffset,
       };
    }
 
@@ -78,25 +78,47 @@ class CoverFlow extends Component {
    }
 
    render() {
-      return this.props.isActive && (
-         <Container className="cover-flow">
-            <Header />
-            <Coverflow
-               displayQuantityOfSide={1}
-               navigation={false}
-               clickable={false}
-               active={this.scrollIndex}
-            >
-               <img alt="album" src="https://www.w3schools.com/html/pic_trulli.jpg" />
-               <img alt="album2" src="https://www.w3schools.com/html/pic_trulli.jpg" />
-               <img alt="album3" src="https://www.w3schools.com/html/pic_trulli.jpg" />
-            </Coverflow>
-         </Container>
+      return (
+         this.props.isActive && (
+            <Container className="cover-flow">
+               <Header />
+               <CoverFlow
+                  data={[
+                     {
+                        name: 'Coldplay',
+                        src: 'https://www.w3schools.com/html/pic_trulli.jpg',
+                     },
+                     {
+                        name: 'Coldplay',
+                        src: 'https://www.w3schools.com/html/pic_trulli.jpg',
+                     },
+                     {
+                        name: 'Coldplay',
+                        src: 'https://www.w3schools.com/html/pic_trulli.jpg',
+                     },
+                     {
+                        name: 'Coldplay',
+                        src: 'https://www.w3schools.com/html/pic_trulli.jpg',
+                     },
+                     {
+                        name: 'Coldplay',
+                        src: 'https://www.w3schools.com/html/pic_trulli.jpg',
+                     },
+                     {
+                        name: 'Coldplay',
+                        src: 'https://www.w3schools.com/html/pic_trulli.jpg',
+                     },
+                     {
+                        name: 'Coldplay',
+                        src: 'https://www.w3schools.com/html/pic_trulli.jpg',
+                     },
+                  ]}
+                  activeIndex={this.scrollIndex}
+               />
+            </Container>
+         )
       );
    }
 }
 
-export default connect(
-   mapStateToProps,
-   mapDispatchToProps,
-)(CoverFlow);
+export default connect(mapStateToProps, mapDispatchToProps)(CoverFlowContainer);

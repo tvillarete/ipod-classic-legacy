@@ -41,6 +41,7 @@ const SplitView = ({ viewState }) => {
             type="split"
             viewStack={filteredViewStack}
             preview={Preview}
+            indexOffset={0}
          />
       </Container>
    );

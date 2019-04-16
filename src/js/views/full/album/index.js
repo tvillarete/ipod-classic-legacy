@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { Button } from '../../../toolbox';
 import * as Views from '../..';
 import * as ApiActions from '../../../api/actions';
-import * as ViewActions from '../../actions';
 
 const Container = styled.div`
    background: white;
@@ -16,31 +15,29 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-   fetchArtist: name => dispatch(ApiActions.fetchArtist(name)),
-   pushView: view => dispatch(ViewActions.pushView(view))
+   fetchAlbum: (artist, album) => dispatch(ApiActions.fetchAlbum({ artist, album })),
 });
 
-let albumList = [];
+let trackList = [];
 
-class ArtistView extends Component {
+class AlbumView extends Component {
    static get metadata() {
       return {
-         name: 'Artist',
+         name: 'Album',
          viewType: "full",
-         sections: albumList,
+         sections: trackList,
       };
    }
 
    static getDerivedStateFromProps(nextProps, prevState) {
       const { apiState, name } = nextProps;
       const { scrollOffset } = prevState;
-      const { artistData } = apiState;
+      const { albumData } = apiState;
       const { scrollIndex } = nextProps;
 
-      albumList = artistData[name].map(album => album.album);
+      trackList = albumData[name];
 
       return {
-         albums: albumList,
          scrollOffset:
             scrollIndex < scrollOffset + 9
                ? scrollOffset - 1
@@ -56,46 +53,46 @@ class ArtistView extends Component {
    };
 
    componentDidMount() {
-      const { apiState, name } = this.props;
-      const { artistData } = apiState;
-      const { albums } = this.state;
+      const { apiState, artist, name } = this.props;
+      const { albumData } = apiState;
 
-      if (artistData[name].length === 0) {
-         this.props.fetchArtist(name);
+      if (albumData[name].length === 0) {
+         this.props.fetchAlbum(artist, name);
       } else {
-         albumList = albums.map(album => album.album);
+         trackList = albumData[name].map(track => track.name);
       }
    }
 
    componentDidUpdate() {
-      const { viewState, scrollIndex, index, name } = this.props;
+      const { viewState, scrollIndex, index } = this.props;
       const { selected, viewStack } = viewState;
 
       if (selected && index === viewStack.length - 1) {
          this.props.pushView({
             component: Views.Album,
             props: {
-               artist: name,
-               name: albumList[scrollIndex]
+               name: trackList[scrollIndex]
             }
          });
       }
    }
 
    render() {
-      const { scrollIndex } = this.props;
-      const { albums } = this.state;
+      const { scrollIndex, apiState, name } = this.props;
+      const { albumData } = apiState;
+      const tracks = albumData[name];
 
       return (
          <Container id="artistsContainer">
-            {albums &&
-               albums.map((album, index) => {
+            {tracks &&
+               tracks.map((track, index) => {
                   const highlighted = index === scrollIndex;
                   return (
                      <Button
                         highlighted={highlighted}
-                        key={`album-${album}-${index}`}>
-                        {album}
+                        hideArrow
+                        key={`track-${track.name}-${index}`}>
+                        {track.name}
                      </Button>
                   );
                })}
@@ -107,4 +104,4 @@ class ArtistView extends Component {
 export default connect(
    mapStateToProps,
    mapDispatchToProps,
-)(ArtistView);
+)(AlbumView);

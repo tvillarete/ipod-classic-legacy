@@ -58,11 +58,7 @@ class Wheel extends Component {
    };
 
    select = () => {
-      const { viewState } = this.props;
-      const { scrollIndexStack } = viewState;
-      const index = scrollIndexStack[scrollIndexStack.length - 1];
-
-      this.props.select(index);
+      this.props.select(this.scrollIndex);
    };
 
    handleScroll = val => {
@@ -82,9 +78,9 @@ class Wheel extends Component {
 
    get scrollIndex() {
       const { viewState } = this.props;
-      const { scrollIndexStack } = viewState;
+      const { viewStack } = viewState;
 
-      return scrollIndexStack[scrollIndexStack.length - 1];
+      return viewStack[viewStack.length - 1].props.scrollIndex
    }
 
    handleWheelClick = (e, isMobile) => {

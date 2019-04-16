@@ -1,76 +1,74 @@
-import HomeView from './home';
+import HomeView from "./split/home";
 
 const initialState = {
-   viewStack: [{ component: HomeView, props: {} }],
-   fullWidthViewStack: [],
-   // Each view has a scrollIndex attached to it.
-   scrollIndexStack: [0],
-   selected: false,
+   viewStack: [
+      {
+         component: HomeView,
+         full_width: false,
+         props: {
+            scrollIndex: 0
+         }
+      }
+   ],
+   selected: false
 };
 
 const viewReducer = (state = initialState, action) => {
    let stackLength = state.viewStack.length - 1;
    let curView = state.viewStack[stackLength];
-   let curScrollIndex =
-      state.scrollIndexStack[state.scrollIndexStack.length - 1];
+   let curScrollIndex = state.viewStack[stackLength].props.scrollIndex;
    let curViewSections = curView.component.metadata.sections;
-   let newScrollIndexStack = null;
+   let newCurView = null;
 
    switch (action.type) {
-      case 'PUSH_VIEW':
+      case "PUSH_VIEW":
          return {
             ...state,
-            viewStack: [...state.viewStack, action.view],
-            scrollIndexStack: [...state.scrollIndexStack, 0],
-            selected: false,
+            viewStack: [
+               ...state.viewStack,
+               {
+                  ...action.view,
+                  props: {
+                     ...action.view.props,
+                     scrollIndex: 0
+                  }
+               }
+            ],
+            selected: false
          };
-      case 'POP_VIEW':
+      case "POP_VIEW":
          return state.viewStack.length > 1
             ? {
                  ...state,
                  viewStack: state.viewStack.slice(0, -1),
-                 scrollIndexStack: state.scrollIndexStack.slice(0, -1),
-                 selected: false,
+                 selected: false
               }
             : state;
-      case 'PUSH_FULL_VIEW':
-         return {
-            ...state,
-            viewStack: [...state.viewStack, action.view],
-            scrollIndexStack: [...state.scrollIndexStack, 0],
-            selected: false,
-         };
-      case 'POP_FULL_VIEW':
-         return state.fullWidthViewStack.length > 1
-            ? {
-                 ...state,
-                 viewStack: state.fullWidthViewStack.slice(0, -1),
-                 scrollIndexStack: state.scrollIndexStack.slice(0, -1),
-                 selected: false,
-              }
-            : state;
-      case 'SCROLL_RIGHT':
-         newScrollIndexStack = state.scrollIndexStack;
+      case "SCROLL_RIGHT":
+         newCurView = curView;
+
          if (curScrollIndex <= curViewSections.length - 2) {
-            newScrollIndexStack[newScrollIndexStack.length - 1]++;
+            newCurView.props.scrollIndex++;
          }
          return {
             ...state,
-            scrollIndexStack: newScrollIndexStack,
+            viewStack: [...state.viewStack.slice(0, -1), newCurView]
          };
-      case 'SCROLL_LEFT':
-         newScrollIndexStack = state.scrollIndexStack;
+      case "SCROLL_LEFT":
+         newCurView = curView;
+
          if (curScrollIndex > 0) {
-            newScrollIndexStack[newScrollIndexStack.length - 1]--;
+            newCurView.props.scrollIndex--;
          }
+
          return {
             ...state,
-            scrollIndexStack: newScrollIndexStack,
+            viewStack: [...state.viewStack.slice(0, -1), newCurView]
          };
-      case 'SELECT':
+      case "SELECT":
          return {
             ...state,
-            selected: true,
+            selected: true
          };
       default:
          return state;

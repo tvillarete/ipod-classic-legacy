@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { Button } from '../../toolbox';
+import { Button } from '../../../toolbox';
 import Preview from './preview';
-import * as ApiActions from '../../api/actions';
+import * as ApiActions from '../../../api/actions';
 
 const Container = styled.div`
    background: white;
@@ -15,26 +15,26 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-   fetchArtists: () => dispatch(ApiActions.fetchArtists()),
+   fetchArtist: () => dispatch(ApiActions.fetchArtist()),
 });
 
 let artistList = [];
 
-class ArtistsView extends Component {
+class ArtistView extends Component {
    static get metadata() {
       return {
-         name: 'Artists',
+         name: 'Artist',
+         viewType: "split",
          preview: Preview,
          sections: artistList,
       };
    }
 
    static getDerivedStateFromProps(nextProps, prevState) {
-      const { apiState, viewState, index } = nextProps;
+      const { apiState } = nextProps;
       const { scrollOffset } = prevState;
       const { artists } = apiState;
-      const { scrollIndexStack } = viewState;
-      const scrollIndex = scrollIndexStack[index];
+      const { scrollIndex } = nextProps;
 
       artistList = artists.map(artist => artist.artist);
 
@@ -54,12 +54,13 @@ class ArtistsView extends Component {
       scrollOffset: 0,
    };
 
+   /*
    componentDidMount() {
       const { apiState } = this.props;
       const { artists } = apiState;
 
       if (artists.length === 0) {
-         this.props.fetchArtists();
+         this.props.fetchArtist();
       } else {
          artistList = artists.map(artist => artist.artist);
       }
@@ -71,21 +72,17 @@ class ArtistsView extends Component {
       document.getElementById('artistsContainer').scrollTop = scrollOffset * 10;
    }
 
-   get scrollIndex() {
-      const { viewState, index } = this.props;
-      const { scrollIndexStack } = viewState;
-
-      return scrollIndexStack[index];
-   }
-
+   */
    render() {
-      const { sections } = ArtistsView.metadata;
+      const { scrollIndex } = this.props;
+      const { sections } = ArtistView.metadata;
 
       return (
          <Container id="artistsContainer">
+            <h3>Artist</h3>
             {sections &&
                sections.map((artist, index) => {
-                  const highlighted = index === this.scrollIndex;
+                  const highlighted = index === scrollIndex;
                   return (
                      <Button
                         highlighted={highlighted}
@@ -102,4 +99,4 @@ class ArtistsView extends Component {
 export default connect(
    mapStateToProps,
    mapDispatchToProps,
-)(ArtistsView);
+)(ArtistView);

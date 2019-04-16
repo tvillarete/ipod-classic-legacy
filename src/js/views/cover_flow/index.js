@@ -29,11 +29,9 @@ class CoverFlowContainer extends Component {
    }
 
    static getDerivedStateFromProps(nextProps, prevState) {
-      const { apiState, viewState, index } = nextProps;
+      const { apiState, scrollIndex } = nextProps;
       const { scrollOffset } = prevState;
       const { artists } = apiState;
-      const { scrollIndexStack } = viewState;
-      const scrollIndex = scrollIndexStack[index];
 
       artistList = artists.map(artist => artist.artist);
 

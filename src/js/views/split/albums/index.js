@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { Button } from '../../toolbox';
+import { Button } from '../../../toolbox';
 import Preview from './preview';
 
 const Container = styled.div`
@@ -12,21 +12,21 @@ const mapStateToProps = state => ({
    viewState: state.viewState,
 });
 
-class VideosView extends Component {
+class AlbumsView extends Component {
    static get metadata() {
       return {
-         name: 'Videos',
+         name: 'Albums',
+         viewType: "split",
          preview: Preview,
          sections: [
+
          ],
       };
    }
 
    render() {
-      const { viewState, index } = this.props;
-      const { scrollIndexStack } = viewState;
-      const { sections } = VideosView.metadata;
-      const scrollIndex = scrollIndexStack[index];
+      const { scrollIndex } = this.props;
+      const { sections } = AlbumsView.metadata;
 
       return (
          <Container>
@@ -47,4 +47,4 @@ class VideosView extends Component {
    }
 }
 
-export default connect(mapStateToProps)(VideosView);
+export default connect(mapStateToProps)(AlbumsView);

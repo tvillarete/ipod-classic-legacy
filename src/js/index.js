@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import ViewContainer from './views/view_container';
-import { constants } from './toolbox';
-import Wheel from './wheel';
+import React, { Component } from "react";
+import styled from "styled-components";
+import { constants } from "./toolbox";
+import Wheel from "./wheel";
+import CoverFlow from "./views/cover_flow";
+import SplitView from "./views/split";
+import FullView from "./views/full";
 
 const { color } = constants;
 
@@ -36,12 +38,38 @@ const Shell = styled.div`
    }
 `;
 
+const ViewContainer = styled.div`
+   position: relative;
+   display: flex;
+   height: 40%;
+   margin: 24px;
+   border: 4px solid black;
+   background: white;
+   border-radius: 8px;
+   overflow: hidden;
+   animation: fadeFromBlack 0.5s;
+
+   > div {
+      user-select: none;
+   }
+
+   @keyframes fadeFromBlack {
+      0% {
+         filter: brightness(0);
+      }
+   }
+`;
+
 class Ipod extends Component {
    render() {
       return (
          <Container>
             <Shell>
-               <ViewContainer />
+               <ViewContainer>
+                  <CoverFlow />
+                  <SplitView />
+                  <FullView />
+               </ViewContainer>
                <Wheel />
             </Shell>
          </Container>

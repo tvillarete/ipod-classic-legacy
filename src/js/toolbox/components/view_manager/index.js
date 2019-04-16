@@ -47,7 +47,7 @@ const TransitionContainer = styled.div`
    right: 0;
    background: white;
    transition: all 0.35s;
-   animation: ${props => props.index > 0 && 'slideInFromRight'} 0.35s;
+   animation: ${props => !props.firstOfType && "slideInFromRight"} 0.35s;
 
    ${props =>
       props.belowTopView &&
@@ -141,7 +141,7 @@ class ViewManager extends Component {
    }
 
    render() {
-      const { type, hidden, preview } = this.props;
+      const { type, hidden, preview, indexOffset } = this.props;
       const { exiting, viewStack } = this.state;
       const Preview = preview;
 
@@ -152,13 +152,17 @@ class ViewManager extends Component {
                {viewStack.map((View, index) => (
                   <TransitionContainer
                      key={`view-${index}`}
-                     index={index}
+                     index={index + indexOffset}
+                     firstOfType={index === 0}
                      exiting={exiting}
                      belowTopView={index <= viewStack.length - 2}
                      secondFromTop={index === viewStack.length - 2}
                      topOfStack={index === viewStack.length - 1}
                   >
-                     <View.component index={index} {...View.props} />
+                     <View.component
+                        index={index + indexOffset}
+                        {...View.props}
+                     />
                   </TransitionContainer>
                ))}
             </ViewContainer>

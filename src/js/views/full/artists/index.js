@@ -67,7 +67,7 @@ class ArtistsView extends Component {
    }
 
    componentDidUpdate() {
-      const { viewState, index } = this.props;
+      const { viewState, scrollIndex, index } = this.props;
       const { selected, viewStack } = viewState;
       const { scrollOffset } = this.state;
 
@@ -76,7 +76,9 @@ class ArtistsView extends Component {
       if (selected && index === viewStack.length - 1) {
          this.props.pushView({
             component: Views.Artist,
-            props: {}
+            props: {
+               name: artistList[scrollIndex]
+            }
          });
       }
    }

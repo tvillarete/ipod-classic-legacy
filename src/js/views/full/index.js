@@ -35,7 +35,9 @@ class FullView extends Component {
    static getDerivedStateFromProps(nextProps, prevState) {
       const newViewStack = filteredViews(nextProps.viewState.viewStack);
       const prevViewStack = prevState.viewStack;
-      const exiting = newViewStack.length < prevViewStack.length;
+      const exiting =
+         newViewStack.length === 0 &&
+         newViewStack.length < prevViewStack.length;
 
       return {
          exiting,
@@ -54,6 +56,12 @@ class FullView extends Component {
       }, 350);
    }
 
+   get splitViews() {
+      return this.props.viewState.viewStack.filter(
+         view => view.component.metadata.viewType === "split"
+      );
+   }
+
    componentDidUpdate() {
       if (this.state.exiting) {
          this.animateBack();
@@ -68,7 +76,11 @@ class FullView extends Component {
             className="full-view-container"
             isHidden={viewStack.length === 0 || this.state.exiting}
          >
-            <ViewManager type="full" viewStack={viewStack} />
+            <ViewManager
+               type="full"
+               viewStack={viewStack}
+               indexOffset={this.splitViews.length}
+            />
          </Container>
       );
    }

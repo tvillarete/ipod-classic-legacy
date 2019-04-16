@@ -26,7 +26,7 @@ const Button = ({ highlighted, ...props }) => {
    return (
       <Container highlighted={highlighted}>
          <Text highlighted={highlighted}>{props.children}</Text>
-         {highlighted && (
+         {highlighted && !props.hideArrow && (
             <Icon
                name="chevron-right"
                color={highlighted ? color.white : color.gray[3]}

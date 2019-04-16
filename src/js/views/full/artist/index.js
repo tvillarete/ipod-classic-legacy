@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import styled from 'styled-components';
-import { Button } from '../../../toolbox';
-import * as Views from '../..';
-import * as ApiActions from '../../../api/actions';
-import * as ViewActions from '../../actions';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
+import { Button } from "../../../toolbox";
+import * as Views from "../..";
+import * as ApiActions from "../../../api/actions";
+import * as ViewActions from "../../actions";
 
 const Container = styled.div`
    background: white;
@@ -12,7 +12,7 @@ const Container = styled.div`
 
 const mapStateToProps = state => ({
    viewState: state.viewState,
-   apiState: state.apiState,
+   apiState: state.apiState
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -25,9 +25,9 @@ let albumList = [];
 class ArtistView extends Component {
    static get metadata() {
       return {
-         name: 'Artist',
+         name: "Artist",
          viewType: "full",
-         sections: albumList,
+         sections: albumList
       };
    }
 
@@ -45,14 +45,14 @@ class ArtistView extends Component {
             scrollIndex < scrollOffset + 9
                ? scrollOffset - 1
                : scrollIndex > scrollOffset + 9
-                  ? scrollOffset + 1
-               : scrollOffset,
+               ? scrollOffset + 1
+               : scrollOffset
       };
    }
 
    state = {
       albums: [],
-      scrollOffset: 0,
+      scrollOffset: 0
    };
 
    componentDidMount() {
@@ -83,19 +83,25 @@ class ArtistView extends Component {
    }
 
    render() {
-      const { scrollIndex } = this.props;
-      const { albums } = this.state;
+      const { scrollIndex, apiState, name } = this.props;
+      const { artistData } = apiState;
+      const albums = artistData[name];
 
       return (
          <Container id="artistsContainer">
             {albums &&
                albums.map((album, index) => {
+                  const artwork = `http://tannerv.ddns.net:12345/SpotiReact/${
+                     album.artwork
+                  }`;
                   const highlighted = index === scrollIndex;
                   return (
                      <Button
                         highlighted={highlighted}
-                        key={`album-${album}-${index}`}>
-                        {album}
+                        image={artwork}
+                        key={`album-${album.album}-${index}`}
+                     >
+                        {album.album}
                      </Button>
                   );
                })}
@@ -106,5 +112,5 @@ class ArtistView extends Component {
 
 export default connect(
    mapStateToProps,
-   mapDispatchToProps,
+   mapDispatchToProps
 )(ArtistView);

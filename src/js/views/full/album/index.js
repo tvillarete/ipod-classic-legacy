@@ -76,10 +76,8 @@ class AlbumView extends Component {
 
       if (selected && index === viewStack.length - 1) {
          this.props.pushView({
-            component: Views.Album,
-            props: {
-               name: trackList[scrollIndex]
-            }
+            component: Views.NowPlaying,
+            props: {}
          });
          this.props.playSong({
             playlist: trackList,

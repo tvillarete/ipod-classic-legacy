@@ -6,3 +6,4 @@ export { default as Artist } from './full/artist';
 export { default as Albums} from './split/albums';
 export { default as Album } from './full/album';
 export { default as CoverFlow } from './cover_flow';
+export { default as NowPlaying } from './full/now_playing';

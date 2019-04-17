@@ -1,9 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import styled from 'styled-components';
-import { Button } from '../../../toolbox';
-import * as Views from '../..';
-import * as ApiActions from '../../../api/actions';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
+import { Button } from "../../../toolbox";
+import * as Views from "../..";
+import * as ApiActions from "../../../api/actions";
+import * as AudioActions from "../../../audio/actions";
+import * as ViewActions from "../../actions";
 
 const Container = styled.div`
    background: white;
@@ -12,10 +14,14 @@ const Container = styled.div`
 const mapStateToProps = state => ({
    viewState: state.viewState,
    apiState: state.apiState,
+   audioState: state.audioState
 });
 
 const mapDispatchToProps = dispatch => ({
-   fetchAlbum: (artist, album) => dispatch(ApiActions.fetchAlbum({ artist, album })),
+   pushView: view => dispatch(ViewActions.pushView(view)),
+   fetchAlbum: (artist, album) =>
+      dispatch(ApiActions.fetchAlbum({ artist, album })),
+   playSong: options => dispatch(AudioActions.playSong(options))
 });
 
 let trackList = [];
@@ -23,9 +29,9 @@ let trackList = [];
 class AlbumView extends Component {
    static get metadata() {
       return {
-         name: 'Album',
+         name: "Album",
          viewType: "full",
-         sections: trackList,
+         sections: trackList
       };
    }
 
@@ -42,21 +48,22 @@ class AlbumView extends Component {
             scrollIndex < scrollOffset + 9
                ? scrollOffset - 1
                : scrollIndex > scrollOffset + 9
-                  ? scrollOffset + 1
-               : scrollOffset,
+               ? scrollOffset + 1
+               : scrollOffset
       };
    }
 
    state = {
       albums: [],
       scrollOffset: 0,
+      audio: null
    };
 
    componentDidMount() {
       const { apiState, artist, name } = this.props;
       const { albumData } = apiState;
 
-      if (albumData[name].length === 0) {
+      if (!albumData[name] || albumData[name].length === 0) {
          this.props.fetchAlbum(artist, name);
       } else {
          trackList = albumData[name].map(track => track.name);
@@ -73,6 +80,10 @@ class AlbumView extends Component {
             props: {
                name: trackList[scrollIndex]
             }
+         });
+         this.props.playSong({
+            playlist: trackList,
+            index: scrollIndex
          });
       }
    }
@@ -91,7 +102,8 @@ class AlbumView extends Component {
                      <Button
                         highlighted={highlighted}
                         hideArrow
-                        key={`track-${track.name}-${index}`}>
+                        key={`track-${track.name}-${index}`}
+                     >
                         {track.name}
                      </Button>
                   );
@@ -103,5 +115,5 @@ class AlbumView extends Component {
 
 export default connect(
    mapStateToProps,
-   mapDispatchToProps,
+   mapDispatchToProps
 )(AlbumView);

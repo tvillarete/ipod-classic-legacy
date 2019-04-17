@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 const Container = styled.div`
    display: flex;
+   justify-content: space-between;
    align-items: center;
    padding: 0 6px;
    height: 20px;
@@ -20,19 +21,32 @@ const Text = styled.h3`
    font-size: 14px;
 `;
 
+const IconContainer = styled.div`
+   display: flex;
+`;
+
+const Icon = styled.img`
+   max-height: 14px;
+`;
+
 const mapStateToProps = state => ({
    viewState: state.viewState,
+   audioState: state.audioState,
 });
 
 class Header extends Component {
    render() {
-      const { viewState } = this.props;
+      const { viewState, audioState } = this.props;
       const { viewStack } = viewState;
+      const { isPlaying } = audioState;
       const viewTitle = viewStack[viewStack.length - 1].component.metadata.name;
 
       return (
          <Container>
             <Text>{viewTitle}</Text>
+            <IconContainer>
+               {isPlaying && <Icon src="play.svg" />}
+            </IconContainer>
          </Container>
       );
    }

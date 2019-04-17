@@ -17,7 +17,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
    fetchArtist: name => dispatch(ApiActions.fetchArtist(name)),
-   pushView: view => dispatch(ViewActions.pushView(view))
+   pushView: view => dispatch(ViewActions.pushView(view)),
 });
 
 let albumList = [];

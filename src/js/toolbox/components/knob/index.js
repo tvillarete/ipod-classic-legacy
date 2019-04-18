@@ -30,7 +30,6 @@ class Knob extends React.Component {
       angleArc: PropTypes.number,
       angleOffset: PropTypes.number,
       disableMouseWheel: PropTypes.bool,
-      title: PropTypes.string,
       className: PropTypes.string,
       canvasClassName: PropTypes.string,
    };
@@ -362,8 +361,6 @@ class Knob extends React.Component {
          className,
          disableMouseWheel,
          readOnly,
-         title,
-         value,
       } = this.props;
 
       return (
@@ -378,7 +375,6 @@ class Knob extends React.Component {
                className={canvasClassName}
                style={{ width: '100%', height: '100%' }}
                onMouseDown={readOnly ? null : this.handleMouseDown}
-               title={title ? `${title}: ${value}` : value}
             />
             {this.renderCenter()}
          </div>

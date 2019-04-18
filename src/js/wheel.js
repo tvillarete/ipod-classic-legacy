@@ -71,10 +71,13 @@ class Wheel extends Component {
    static getDerivedStateFromProps(nextProps, prevState) {
       const newViewStack = nextProps.viewState.viewStack;
       const prevViewStack = prevState.viewStack;
-      const newScrollIndex = newViewStack[newViewStack.length - 1].props.scrollIndex;
+      const newScrollIndex =
+         newViewStack[newViewStack.length - 1].props.scrollIndex;
 
       return {
-         ...(newViewStack.length != prevViewStack.length && { count: newScrollIndex * 5 }),
+         ...(newViewStack.length !== prevViewStack.length && {
+            count: newScrollIndex * 5
+         }),
          viewStack: newViewStack
       };
    }

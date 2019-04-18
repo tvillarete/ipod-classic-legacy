@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { constants } from "../../../toolbox";
-import * as Views from "../..";
 import * as ApiActions from "../../../api/actions";
 import * as AudioActions from "../../../audio/actions";
 import * as ViewActions from "../../actions";
@@ -70,8 +69,6 @@ const mapDispatchToProps = dispatch => ({
    playSong: options => dispatch(AudioActions.playSong(options))
 });
 
-let trackList = [];
-
 class NowPlayingView extends Component {
    static get metadata() {
       return {
@@ -107,7 +104,7 @@ class NowPlayingView extends Component {
    };
 
    componentDidUpdate() {
-      const { viewState, scrollIndex, index } = this.props;
+      const { viewState, index } = this.props;
       const { selected, viewStack } = viewState;
 
       if (selected && index === viewStack.length - 1) {
@@ -115,10 +112,10 @@ class NowPlayingView extends Component {
    }
 
    render() {
-      const { scrollIndex, audioState } = this.props;
+      const { audioState } = this.props;
       const { playlist, currentIndex } = audioState;
       const track = playlist[currentIndex];
-      const { name, artist, album, artwork, url } = track;
+      const { name, artist, album, artwork } = track;
       const artworkUrl = `http://tannerv.ddns.net:12345/SpotiReact/${artwork}`;
 
       return (

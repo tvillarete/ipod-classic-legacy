@@ -41,7 +41,7 @@ const Shell = styled.div`
 const ViewContainer = styled.div`
    position: relative;
    display: flex;
-   height: 40%;
+   height: 39%;
    margin: 24px;
    border: 4px solid black;
    background: white;
@@ -65,7 +65,7 @@ class Ipod extends Component {
       return (
          <Container>
             <Shell>
-               <ViewContainer>
+               <ViewContainer id="screen">
                   <CoverFlow />
                   <SplitView />
                   <FullView />

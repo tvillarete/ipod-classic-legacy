@@ -92,7 +92,7 @@ class AlbumView extends Component {
       const tracks = albumData[name];
 
       return (
-         <Container id="artistsContainer">
+         <Container>
             {tracks &&
                tracks.map((track, index) => {
                   const highlighted = index === scrollIndex;

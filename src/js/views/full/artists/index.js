@@ -4,10 +4,11 @@ import styled from "styled-components";
 import { Button } from "../../../toolbox";
 import * as Views from "../../";
 import * as ApiActions from "../../../api/actions";
-import * as ViewActions from '../../actions';
+import * as ViewActions from "../../actions";
 
 const Container = styled.div`
    background: white;
+   transform: translateY(-${props => props.top || 0}px);
 `;
 
 const mapStateToProps = state => ({
@@ -42,11 +43,11 @@ class ArtistsView extends Component {
       return {
          artists: artistList,
          scrollOffset:
-            scrollIndex < scrollOffset + 9
-               ? scrollOffset - 1
-               : scrollIndex > scrollOffset + 9
-               ? scrollOffset + 1
-               : scrollOffset
+            scrollIndex > 8
+               ? scrollIndex > scrollOffset / 24
+                  ? 24 * (scrollIndex - 8)
+                  : scrollOffset - 24
+               : 0
       };
    }
 
@@ -71,8 +72,6 @@ class ArtistsView extends Component {
       const { selected, viewStack } = viewState;
       const { scrollOffset } = this.state;
 
-      document.getElementById("artistsContainer").scrollTop = scrollOffset * 10;
-
       if (selected && index === viewStack.length - 1) {
          this.props.pushView({
             component: Views.Artist,
@@ -83,12 +82,18 @@ class ArtistsView extends Component {
       }
    }
 
+   get scrollOffset() {
+      const { scrollIndex } = this.props;
+
+      return scrollIndex > 8 ? 24 * (scrollIndex - 8) : 0;
+   }
+
    render() {
       const { scrollIndex } = this.props;
       const { sections } = ArtistsView.metadata;
 
       return (
-         <Container id="artistsContainer">
+         <Container top={this.scrollOffset}>
             {sections &&
                sections.map((artist, index) => {
                   const highlighted = index === scrollIndex;

@@ -3,6 +3,10 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 
 const Container = styled.div`
+   z-index: 1;
+   position: absolute;
+   left: 0;
+   right: 0;
    display: flex;
    justify-content: space-between;
    align-items: center;

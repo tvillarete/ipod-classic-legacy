@@ -88,7 +88,7 @@ class ArtistView extends Component {
       const albums = artistData[name];
 
       return (
-         <Container id="artistsContainer">
+         <Container>
             {albums &&
                albums.map((album, index) => {
                   const artwork = `http://tannerv.ddns.net:12345/SpotiReact/${

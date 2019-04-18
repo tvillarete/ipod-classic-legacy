@@ -9,22 +9,28 @@ const Container = styled.div`
    display: flex;
    align-items: center;
    justify-content: space-between;
-   padding: 0 4px;
-   min-height: 24px;
+   padding: 0 ${props => props.hasImage ? 0 : 4}px;
+   min-height: ${props => props.hasImage ? 48 : 24}px;
    background: ${props =>
       props.highlighted &&
       'linear-gradient(to bottom,rgb(60, 184, 255) 0%,rgb(52, 122, 181) 100%)'};
 `;
 
 const Text = styled.h3`
-   margin: 0;
+   flex: 1;
+   margin: 0 0 0 4px;
    font-size: 14px;
    color: ${props => props.highlighted && 'white'};
 `;
 
+const Image = styled.img`
+   max-height: 48px;
+`;
+
 const Button = ({ highlighted, ...props }) => {
    return (
-      <Container highlighted={highlighted}>
+      <Container highlighted={highlighted} hasImage={props.image}>
+         {props.image && <Image src={props.image} />}
          <Text highlighted={highlighted}>{props.children}</Text>
          {highlighted && !props.hideArrow && (
             <Icon

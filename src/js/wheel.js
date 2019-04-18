@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import styled from 'styled-components';
-import { Knob, constants } from './toolbox';
-import * as Actions from './views/actions';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
+import { Knob, constants } from "./toolbox";
+import * as ViewActions from "./views/actions";
+import * as AudioActions from "./audio/actions";
 
 const { color } = constants;
 
@@ -42,20 +43,41 @@ const WheelButton = styled.img`
 
 const mapStateToProps = state => ({
    viewState: state.viewState,
+   audioState: state.audioState
 });
 
 const mapDispatchToProps = dispatch => ({
-   scrollRight: () => dispatch(Actions.scrollRight()),
-   scrollLeft: () => dispatch(Actions.scrollLeft()),
-   popView: () => dispatch(Actions.popView()),
-   select: index => dispatch(Actions.select(index)),
+   scrollRight: () => dispatch(ViewActions.scrollRight()),
+   scrollLeft: () => dispatch(ViewActions.scrollLeft()),
+   popView: () => dispatch(ViewActions.popView()),
+   select: index => dispatch(ViewActions.select(index)),
+   nextSong: () => dispatch(AudioActions.nextSong()),
+   prevSong: () => dispatch(AudioActions.prevSong()),
+   pause: () => dispatch(AudioActions.pause()),
+   resume: () => dispatch(AudioActions.resume())
 });
 
 class Wheel extends Component {
-   state = {
-      count: 0,
-      tempScrollIndex: null,
-   };
+   constructor(props) {
+      super(props);
+
+      this.state = {
+         count: 0,
+         viewStack: props.viewState.viewStack,
+         tempScrollIndex: null
+      };
+   }
+
+   static getDerivedStateFromProps(nextProps, prevState) {
+      const newViewStack = nextProps.viewState.viewStack;
+      const prevViewStack = prevState.viewStack;
+      const newScrollIndex = newViewStack[newViewStack.length - 1].props.scrollIndex;
+
+      return {
+         ...(newViewStack.length != prevViewStack.length && { count: newScrollIndex * 5 }),
+         viewStack: newViewStack
+      };
+   }
 
    select = () => {
       this.props.select(this.scrollIndex);
@@ -80,11 +102,25 @@ class Wheel extends Component {
       const { viewState } = this.props;
       const { viewStack } = viewState;
 
-      return viewStack[viewStack.length - 1].props.scrollIndex
+      return viewStack[viewStack.length - 1].props.scrollIndex;
    }
 
+   handlePlayPause = () => {
+      const { audioState } = this.props;
+      const { hasAudio, isPlaying } = audioState;
+
+      if (hasAudio) {
+         if (isPlaying) {
+            this.props.pause();
+         } else {
+            this.props.resume();
+         }
+      }
+   };
+
    handleWheelClick = (e, isMobile) => {
-      let offsetX, offsetY = null;
+      let offsetX,
+         offsetY = null;
       if (isMobile) {
          const rect = e.target.getBoundingClientRect();
          offsetX = e.targetTouches[0].pageX - rect.left;
@@ -98,13 +134,14 @@ class Wheel extends Component {
          if (offsetY < 40) {
             this.props.popView();
          } else if (offsetY >= 160) {
-            console.log("Clicked play");
+            // Not implemented yet
+            // this.handlePlayPause();
          }
       } else if (offsetY >= 80 && offsetY < 120) {
          if (offsetX >= 160) {
-            console.log("Clicked skip");
+            this.props.nextSong();
          } else if (offsetX < 90) {
-            console.log("Clicked back");
+            this.props.prevSong();
          }
       }
    };
@@ -112,25 +149,25 @@ class Wheel extends Component {
    handleMouseDown = e => {
       this.setState({ tempScrollIndex: this.scrollIndex });
       this.lastMove = e;
-   }
+   };
 
    componentDidMount() {
-      const scrollWheel = document.querySelector('.scrollwheel');
-      scrollWheel.title = '';
+      const scrollWheel = document.querySelector(".scrollwheel");
+      scrollWheel.title = "";
 
-      scrollWheel.addEventListener('mousedown', this.handleMouseDown);
-      scrollWheel.addEventListener('touchstart', this.handleMouseDown);
-      scrollWheel.addEventListener('touchmove', e => {
+      scrollWheel.addEventListener("mousedown", this.handleMouseDown);
+      scrollWheel.addEventListener("touchstart", this.handleMouseDown);
+      scrollWheel.addEventListener("touchmove", e => {
          this.lastMove = e;
       });
-      scrollWheel.addEventListener('mouseup', e => {
+      scrollWheel.addEventListener("mouseup", e => {
          if (this.state.tempScrollIndex === this.scrollIndex) {
             this.handleWheelClick(e);
          }
          this.setState({ tempScrollIndex: null });
       });
 
-      scrollWheel.addEventListener('touchend', e => {
+      scrollWheel.addEventListener("touchend", e => {
          if (this.state.tempScrollIndex === this.scrollIndex) {
             this.handleWheelClick(this.lastMove, /* isMobile */ true);
          }
@@ -166,5 +203,5 @@ class Wheel extends Component {
 
 export default connect(
    mapStateToProps,
-   mapDispatchToProps,
+   mapDispatchToProps
 )(Wheel);

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { constants } from "./toolbox";
+import { Audio, constants } from "./toolbox";
 import Wheel from "./wheel";
 import CoverFlow from "./views/cover_flow";
 import SplitView from "./views/split";
@@ -69,6 +69,7 @@ class Ipod extends Component {
                   <CoverFlow />
                   <SplitView />
                   <FullView />
+                  <Audio />
                </ViewContainer>
                <Wheel />
             </Shell>

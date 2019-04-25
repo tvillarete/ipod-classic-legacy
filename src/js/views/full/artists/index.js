@@ -27,6 +27,7 @@ class ArtistsView extends Component {
       return {
          name: "Artists",
          viewType: "full",
+         preview: "music",
          sections: artistList
       };
    }

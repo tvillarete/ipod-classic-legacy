@@ -23,7 +23,7 @@ class CoverFlowContainer extends Component {
    static get metadata() {
       return {
          name: 'Cover Flow',
-         preview: Preview,
+         preview: 'music',
          sections: artistList,
       };
    }

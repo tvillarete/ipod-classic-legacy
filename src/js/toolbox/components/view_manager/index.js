@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled, { css } from "styled-components";
 import { Header } from "../..";
+import Preview from "./preview";
 
 const Container = styled.div`
    position: relative;
@@ -17,19 +18,20 @@ const Container = styled.div`
 `;
 
 const ViewContainer = styled.div`
-   z-index: 1;
+   z-index: 4;
    position: relative;
    flex: 1;
    height: 100%;
    background: white;
-   box-shadow: ${props => props.type === "split" && "0 0 24px black"};
    transition: all 0.35s;
    overflow: hidden;
+   box-shadow: ${props => props.type === "split" && "0 0 24px black"};
 
    ${props =>
       props.isHidden &&
       css`
          transform: translateX(-110%);
+         transition-delay: 0.04s;
          box-shadow: none;
 
          > div {
@@ -82,27 +84,6 @@ const TransitionContainer = styled.div`
    }
 `;
 
-const PreviewContainer = styled.div`
-   position: relative;
-   flex: 1;
-   transition: all 0.35s;
-   overflow: hidden;
-
-   > div {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-   }
-
-   ${props =>
-      props.isHidden &&
-      css`
-         transform: translateX(110%);
-      `};
-`;
-
 class ViewManager extends Component {
    constructor(props) {
       super(props);
@@ -143,7 +124,6 @@ class ViewManager extends Component {
    render() {
       const { type, hidden, preview, indexOffset } = this.props;
       const { exiting, viewStack } = this.state;
-      const Preview = preview;
 
       return (
          <Container className="view-manager" type={type} isHidden={hidden}>
@@ -166,11 +146,7 @@ class ViewManager extends Component {
                   </TransitionContainer>
                ))}
             </ViewContainer>
-            {type === "split" && (
-               <PreviewContainer className="preview-stack" isHidden={hidden}>
-                  {Preview && <Preview />}
-               </PreviewContainer>
-            )}
+            {type === "split" && <Preview viewStack={viewStack} hidden={hidden} />}
          </Container>
       );
    }

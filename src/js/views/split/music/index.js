@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { Button } from '../../../toolbox';
 import * as Views from '../..';
 import * as Actions from '../../actions';
-import Preview from './preview';
 
 const Container = styled.div`
    background: white;
@@ -23,7 +22,7 @@ class MusicView extends Component {
       return {
          name: 'Music',
          viewType: "split",
-         preview: Preview,
+         preview: 'music',
          sections: [Views.CoverFlow, Views.Artists, Views.Albums],
       };
    }

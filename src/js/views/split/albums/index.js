@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Button } from '../../../toolbox';
-import Preview from './preview';
 
 const Container = styled.div`
    background: white;
@@ -17,7 +16,7 @@ class AlbumsView extends Component {
       return {
          name: 'Albums',
          viewType: "split",
-         preview: Preview,
+         preview: 'music',
          sections: [
 
          ],

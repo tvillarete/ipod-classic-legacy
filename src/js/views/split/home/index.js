@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { Button } from "../../../toolbox";
 import * as Actions from "../../actions";
 import * as Views from "../..";
-import Preview from "./preview";
 
 const Container = styled.div`
    background: white;
@@ -24,7 +23,7 @@ class HomeView extends Component {
          component: HomeView,
          name: "iPod",
          viewType: "split",
-         preview: Preview,
+         preview: 'none',
          sections: [
             Views.Music,
             Views.Videos

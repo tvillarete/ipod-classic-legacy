@@ -23,7 +23,7 @@ const IconContainer = styled.div`
 `;
 
 const Icon = styled.img`
-   max-height: 14px;
+   max-height: 12px;
    margin-left: 8px;
 `;
 

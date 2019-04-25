@@ -20,16 +20,6 @@ const SplitView = ({ viewState }) => {
    const filteredViewStack = viewState.viewStack.filter(
       view => view.component.metadata.viewType === "split"
    );
-   const curView = filteredViewStack[filteredViewStack.length - 1];
-   const scrollIndex = curView.props.scrollIndex;
-   let Preview = null;
-
-   try {
-      Preview =
-         curView.component.metadata.sections[scrollIndex].metadata.preview;
-   } catch {
-      console.log("This selection has no preview");
-   }
 
    return (
       <Container className="split-view-container">
@@ -40,7 +30,6 @@ const SplitView = ({ viewState }) => {
             }
             type="split"
             viewStack={filteredViewStack}
-            preview={Preview}
             indexOffset={0}
          />
       </Container>

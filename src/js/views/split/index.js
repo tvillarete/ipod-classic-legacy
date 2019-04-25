@@ -20,8 +20,6 @@ const SplitView = ({ viewState }) => {
    const filteredViewStack = viewState.viewStack.filter(
       view => view.component.metadata.viewType === "split"
    );
-   const curView = filteredViewStack[filteredViewStack.length - 1];
-   const scrollIndex = curView.props.scrollIndex;
 
    return (
       <Container className="split-view-container">

@@ -58,8 +58,6 @@ class MusicPreview extends Component {
    }
 
    startCountdown = () => {
-      const { albums } = this.state;
-
       setInterval(() => {
          const { albums } = this.state;
          this.setState({ transitioning: true });

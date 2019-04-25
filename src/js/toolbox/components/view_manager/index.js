@@ -122,7 +122,7 @@ class ViewManager extends Component {
    }
 
    render() {
-      const { type, hidden, preview, indexOffset } = this.props;
+      const { type, hidden, indexOffset } = this.props;
       const { exiting, viewStack } = this.state;
 
       return (

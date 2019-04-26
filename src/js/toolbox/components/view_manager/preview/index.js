@@ -1,6 +1,7 @@
-import React, { Component } from "react";
-import styled, { css } from "styled-components";
-import MusicPreview from "./music_preview";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import styled, { css } from 'styled-components';
+import MusicPreview from './music_preview';
 
 const Container = styled.div`
    position: relative;
@@ -23,34 +24,40 @@ const Container = styled.div`
       `};
 `;
 
+const mapStateToProps = state => ({
+   viewState: state.viewState,
+});
+
 class Preview extends Component {
    constructor(props) {
       super(props);
 
       this.state = {
-         viewStack: props.viewStack
+         viewStack: props.viewStack,
       };
    }
 
    static getDerivedStateFromProps(nextProps, prevState) {
       return {
-         viewStack: nextProps.viewStack
-      }
+         viewStack: nextProps.viewStack,
+      };
    }
 
    render() {
-      const { viewStack } = this.state;
+      const { viewStack } = this.props.viewState;
+      const splitViewStack = this.state.viewStack;
+      const curSplitView = splitViewStack[splitViewStack.length - 1];
       const curView = viewStack[viewStack.length - 1];
-      const scrollIndex = curView.props.scrollIndex;
-      const curSection = curView.component.metadata.sections[scrollIndex];
+      const scrollIndex = curSplitView.props.scrollIndex;
+      const curSection = curSplitView.component.metadata.sections[scrollIndex];
       const curPreview = curSection.metadata.preview;
 
       return (
-         <Container>
+         <Container isHidden={curView.component.metadata.name === 'Cover Flow'}>
             <MusicPreview curPreview={curPreview} />
          </Container>
       );
    }
 }
 
-export default Preview;
+export default connect(mapStateToProps)(Preview);

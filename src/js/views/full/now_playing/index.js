@@ -1,10 +1,11 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import styled from "styled-components";
-import { constants } from "../../../toolbox";
-import * as ApiActions from "../../../api/actions";
-import * as AudioActions from "../../../audio/actions";
-import * as ViewActions from "../../actions";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
+import { constants } from '../../../toolbox';
+import * as ApiActions from '../../../api/actions';
+import * as AudioActions from '../../../audio/actions';
+import * as ViewActions from '../../actions';
+import ProgressBar from './progress_bar';
 
 const { color } = constants;
 
@@ -49,33 +50,36 @@ const Title = styled.h2`
 const Subtitle = styled.h3`
    font-size: 13px;
    margin: 2px 0;
-   color: ${color.gray[8]};
+   color: ${color.gray[7]};
 `;
 
 const ControlsContainer = styled.div`
+   display: flex;
+   align-items: center;
+   padding: 0 10px;
    height: 3.5em;
 `;
 
 const mapStateToProps = state => ({
    viewState: state.viewState,
    apiState: state.apiState,
-   audioState: state.audioState
+   audioState: state.audioState,
 });
 
 const mapDispatchToProps = dispatch => ({
    pushView: view => dispatch(ViewActions.pushView(view)),
    fetchAlbum: (artist, album) =>
       dispatch(ApiActions.fetchAlbum({ artist, album })),
-   playSong: options => dispatch(AudioActions.playSong(options))
+   playSong: options => dispatch(AudioActions.playSong(options)),
 });
 
 class NowPlayingView extends Component {
    static get metadata() {
       return {
-         name: "Now Playing",
-         viewType: "full",
+         name: 'Now Playing',
+         viewType: 'full',
          // For the volume bar
-         sections: new Array(100)
+         sections: new Array(100),
       };
    }
 
@@ -100,7 +104,7 @@ class NowPlayingView extends Component {
    */
 
    state = {
-      scrollOffset: 0
+      scrollOffset: 0,
    };
 
    componentDidUpdate() {
@@ -113,10 +117,12 @@ class NowPlayingView extends Component {
 
    render() {
       const { audioState } = this.props;
-      const { playlist, currentIndex } = audioState;
+      const { playlist, currentIndex, time } = audioState;
+      const { current, max } = time;
       const track = playlist[currentIndex];
       const { name, artist, album, artwork } = track;
       const artworkUrl = `http://tannerv.ddns.net:12345/SpotiReact/${artwork}`;
+      const percent = Math.round((current / max) * 100);
 
       return (
          <Container>
@@ -128,16 +134,17 @@ class NowPlayingView extends Component {
                   <Title>{name}</Title>
                   <Subtitle>{artist}</Subtitle>
                   <Subtitle>{album}</Subtitle>
-                  <Subtitle>{currentIndex + 1} of {playlist.length}</Subtitle>
+                  <Subtitle>
+                     {currentIndex + 1} of {playlist.length}
+                  </Subtitle>
                </InfoContainer>
             </TrackInfoContainer>
-            <ControlsContainer />
+            <ControlsContainer>
+               <ProgressBar percent={percent} labelStart={current} labelEnd={max} />
+            </ControlsContainer>
          </Container>
       );
    }
 }
 
-export default connect(
-   mapStateToProps,
-   mapDispatchToProps
-)(NowPlayingView);
+export default connect(mapStateToProps, mapDispatchToProps)(NowPlayingView);

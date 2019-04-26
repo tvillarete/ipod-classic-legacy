@@ -26,6 +26,7 @@ class HomeView extends Component {
          preview: 'none',
          sections: [
             Views.Music,
+            Views.NowPlaying
             /*
             Views.Videos
             'Photos',

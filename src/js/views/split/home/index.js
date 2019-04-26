@@ -10,12 +10,23 @@ const Container = styled.div`
 `;
 
 const mapStateToProps = state => ({
+   audioState: state.audioState,
    viewState: state.viewState
 });
 
 const mapDispatchToProps = dispatch => ({
    pushView: view => dispatch(Actions.pushView(view))
 });
+
+let homeSections = [
+   Views.Music
+];
+
+// Only use this list if music is playing.
+const homeSectionsWithAudio = [
+   Views.Music,
+   Views.NowPlaying,
+];
 
 class HomeView extends Component {
    static get metadata() {
@@ -24,25 +35,20 @@ class HomeView extends Component {
          name: "iPod",
          viewType: "split",
          preview: 'none',
-         sections: [
-            Views.Music,
-            Views.NowPlaying
-            /*
-            Views.Videos
-            'Photos',
-            'Extras',
-            'Settings',
-            'Now Playing',
-            'Hello',
-           */
-         ]
+         /* Menu items (Music, Artists, etc.) */
+         sections: homeSections,
       };
    }
 
    componentDidUpdate() {
-      const { viewState, scrollIndex, index } = this.props;
+      const { audioState, viewState, scrollIndex, index } = this.props;
+      const { hasAudio } = audioState;
       const { selected, viewStack } = viewState;
       const { sections } = HomeView.metadata;
+
+      if (hasAudio) {
+         homeSections = homeSectionsWithAudio;
+      }
 
       if (selected && index === viewStack.length - 1) {
          this.props.pushView({

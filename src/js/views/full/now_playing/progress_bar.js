@@ -31,8 +31,7 @@ const Progress = styled.div`
 `;
 
 const Label = styled.h3`
-   font-weight: normal;
-   font-size: 13px;
+   font-size: 12px;
    margin: auto 0;
    width: 35px;
    text-align: ${props => props.textAlign};

@@ -78,6 +78,7 @@ class NowPlayingView extends Component {
       return {
          name: 'Now Playing',
          viewType: 'full',
+         preview: 'music',
          // For the volume bar
          sections: new Array(100),
       };

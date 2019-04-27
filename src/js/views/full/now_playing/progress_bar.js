@@ -64,7 +64,7 @@ class ProgressBar extends Component {
             <Label textAlign="left">{formatTime(labelStart)}</Label>
             <ProgressContainer>
                <Gloss />
-               <Progress percent={percent} />
+               <Progress percent={percent || 0} />
             </ProgressContainer>
             <Label textAlign="right">
                -{formatTime(labelEnd - labelStart)}

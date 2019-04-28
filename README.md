@@ -1,6 +1,8 @@
 # iPod Classic.js
 By [Tanner Villarete](https://linkedin.com/in/tvillarete)
 
+![iPod](https://user-images.githubusercontent.com/21055469/56868146-59483180-69a3-11e9-9209-dde17a7e8843.gif)
+
 ## Demo
 Check out a live demo [here](http://tannerv.com/ipod)
 

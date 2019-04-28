@@ -6,7 +6,7 @@ import CoverFlow from "./views/cover_flow";
 import SplitView from "./views/split";
 import FullView from "./views/full";
 
-const { color } = constants;
+const { color, animation } = constants;
 
 const Container = styled.div`
    position: fixed;
@@ -17,7 +17,6 @@ const Container = styled.div`
    display: flex;
    justify-content: center;
    align-items: center;
-   background: black;
 `;
 
 const Shell = styled.div`
@@ -29,6 +28,9 @@ const Shell = styled.div`
    border: 1px solid gray;
    background: ${color.gray[3]};
    box-shadow: inset 0 0 2.4em #555;
+   animation: ${animation.fadeIn} 0.25s;
+   -webkit-box-reflect: below 0px -webkit-gradient(linear,left top,left bottom,from(transparent),color-stop(50%,transparent),to(rgba(250,250,250,0.3)));
+
 
    @media screen and (max-width: 800px) and (max-height: 800px) {
       height: 100vh;

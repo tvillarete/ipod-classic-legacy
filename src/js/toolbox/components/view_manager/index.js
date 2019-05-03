@@ -48,6 +48,7 @@ const TransitionContainer = styled.div`
    left: 0;
    right: 0;
    background: white;
+   overflow: auto;
    transition: all 0.35s;
    animation: ${props => !props.firstOfType && "slideInFromRight"} 0.35s;
 
@@ -132,6 +133,7 @@ class ViewManager extends Component {
                {viewStack.map((View, index) => (
                   <TransitionContainer
                      key={`view-${index}`}
+                     className="view"
                      index={index + indexOffset}
                      firstOfType={index === 0}
                      exiting={exiting}

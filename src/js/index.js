@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import styled from "styled-components";
 import { Audio, constants } from "./toolbox";
 import Wheel from "./wheel";
@@ -29,8 +30,7 @@ const Shell = styled.div`
    background: ${color.gray[3]};
    box-shadow: inset 0 0 2.4em #555;
    animation: ${animation.fadeIn} 0.25s;
-   -webkit-box-reflect: below 0px -webkit-gradient(linear,left top,left bottom,from(transparent),color-stop(50%,transparent),to(rgba(250,250,250,0.3)));
-
+   -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(rgba(250, 250, 250, 0.3)));
 
    @media screen and (max-width: 800px) and (max-height: 800px) {
       height: 100vh;
@@ -39,6 +39,10 @@ const Shell = styled.div`
       border-radius: 0;
    }
 `;
+
+const mapStateToProps = state => ({
+   viewState: state.viewState
+});
 
 const ViewContainer = styled.div`
    position: relative;
@@ -63,6 +67,62 @@ const ViewContainer = styled.div`
 `;
 
 class Ipod extends Component {
+   constructor(props) {
+      super(props);
+
+      this.state = {
+         viewStack: props.viewState.viewStack,
+         transitioning: false
+      };
+   }
+
+   static getDerivedStateFromProps(nextProps, prevState) {
+      const { viewState } = nextProps;
+      const prevViewStack = prevState.viewStack;
+      const newViewStack = viewState.viewStack;
+      const transitioning = prevViewStack.length !== newViewStack.length;
+
+      return {
+         viewStack: transitioning ? prevViewStack : newViewStack,
+         transitioning
+      };
+   }
+
+   checkForScrollEvent() {
+      const { viewState } = this.props;
+      const { viewStack } = viewState;
+      const stackSize = viewStack.length - 1;
+      const curView = viewStack[stackSize];
+      const viewType = curView.component.metadata.viewType;
+
+      if (viewType !== 'full' && viewType !== 'split') {
+         return;
+      }
+
+      const viewContainer =
+         document.getElementsByClassName(`${viewType}-view-container`)[0];
+      const scrollIndex = curView.props.scrollIndex;
+
+      const views = viewContainer.getElementsByClassName('view');
+      const view = views[views.length - 1];
+      console.log(view);
+
+      view.children[0].children[scrollIndex].scrollIntoView({ block: "nearest" });
+   }
+
+   componentDidUpdate() {
+      if (this.state.transitioning) {
+         setTimeout(() => {
+            this.setState({
+               transitioning: false,
+               viewStack: this.props.viewState.viewStack,
+            });
+         }, 350)
+      } else {
+         this.checkForScrollEvent();
+      }
+   }
+
    render() {
       return (
          <Container>
@@ -80,4 +140,4 @@ class Ipod extends Component {
    }
 }
 
-export default Ipod;
+export default connect(mapStateToProps)(Ipod);

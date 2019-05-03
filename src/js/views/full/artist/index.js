@@ -33,26 +33,17 @@ class ArtistView extends Component {
 
    static getDerivedStateFromProps(nextProps, prevState) {
       const { apiState, name } = nextProps;
-      const { scrollOffset } = prevState;
       const { artistData } = apiState;
-      const { scrollIndex } = nextProps;
 
       albumList = artistData[name].map(album => album.album);
 
       return {
          albums: albumList,
-         scrollOffset:
-            scrollIndex < scrollOffset + 9
-               ? scrollOffset - 1
-               : scrollIndex > scrollOffset + 9
-               ? scrollOffset + 1
-               : scrollOffset
       };
    }
 
    state = {
       albums: [],
-      scrollOffset: 0
    };
 
    componentDidMount() {

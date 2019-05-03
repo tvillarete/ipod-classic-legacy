@@ -105,7 +105,6 @@ class Ipod extends Component {
 
       const views = viewContainer.getElementsByClassName('view');
       const view = views[views.length - 1];
-      console.log(view);
 
       view.children[0].children[scrollIndex].scrollIntoView({ block: "nearest" });
    }

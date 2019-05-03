@@ -35,27 +35,8 @@ class AlbumView extends Component {
       };
    }
 
-   static getDerivedStateFromProps(nextProps, prevState) {
-      const { apiState, name } = nextProps;
-      const { scrollOffset } = prevState;
-      const { albumData } = apiState;
-      const { scrollIndex } = nextProps;
-
-      trackList = albumData[name];
-
-      return {
-         scrollOffset:
-            scrollIndex < scrollOffset + 9
-               ? scrollOffset - 1
-               : scrollIndex > scrollOffset + 9
-               ? scrollOffset + 1
-               : scrollOffset
-      };
-   }
-
    state = {
       albums: [],
-      scrollOffset: 0,
       audio: null
    };
 

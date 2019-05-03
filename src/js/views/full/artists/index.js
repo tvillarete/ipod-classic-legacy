@@ -34,26 +34,17 @@ class ArtistsView extends Component {
 
    static getDerivedStateFromProps(nextProps, prevState) {
       const { apiState } = nextProps;
-      const { scrollOffset } = prevState;
       const { artists } = apiState;
-      const { scrollIndex } = nextProps;
 
       artistList = artists.map(artist => artist.artist);
 
       return {
          artists: artistList,
-         scrollOffset:
-            scrollIndex < scrollOffset + 9
-               ? scrollOffset - 1
-               : scrollIndex > scrollOffset + 9
-               ? scrollOffset + 1
-               : scrollOffset
       };
    }
 
    state = {
       artists: [],
-      scrollOffset: 0
    };
 
    componentDidMount() {
@@ -70,9 +61,6 @@ class ArtistsView extends Component {
    componentDidUpdate() {
       const { viewState, scrollIndex, index } = this.props;
       const { selected, viewStack } = viewState;
-      const { scrollOffset } = this.state;
-
-      document.getElementById("artistsContainer").scrollTop = scrollOffset * 10;
 
       if (selected && index === viewStack.length - 1) {
          this.props.pushView({
@@ -89,7 +77,7 @@ class ArtistsView extends Component {
       const { sections } = ArtistsView.metadata;
 
       return (
-         <Container id="artistsContainer">
+         <Container>
             {sections &&
                sections.map((artist, index) => {
                   const highlighted = index === scrollIndex;

@@ -33,10 +33,6 @@ const Shell = styled.div`
    -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(rgba(250, 250, 250, 0.3)));
 
    @media screen and (max-width: 800px) and (max-height: 800px) {
-      height: 100vh;
-      width: 100vw;
-      border: none;
-      border-radius: 0;
    }
 `;
 
@@ -47,7 +43,7 @@ const mapStateToProps = state => ({
 const ViewContainer = styled.div`
    position: relative;
    display: flex;
-   height: 40%;
+   height: 260px;
    margin: 24px;
    border: 4px solid black;
    background: white;

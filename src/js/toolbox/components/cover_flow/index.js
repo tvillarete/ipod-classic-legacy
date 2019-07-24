@@ -44,7 +44,6 @@ class CoverFlow extends Component {
 
    componentDidMount() {
       const { albums } = this.props.apiState;
-      console.log(albums);
 
       if (!albums.length) {
          this.props.fetchAlbums();

@@ -14,7 +14,7 @@ const Container = styled.div`
    align-items: center;
    height: 14em;
    width: 14em;
-   margin: 3.5em auto;
+   margin: 2.5em auto;
 `;
 
 const CenterButton = styled.div`
@@ -98,7 +98,7 @@ class Wheel extends Component {
          this.setState({ scrolling: true });
          this.props.scrollLeft();
       }
-      this.setState({ count: val });
+      this.setState({ count: val === 100 ? 0 : val === 0 ? 100 : val });
    };
 
    get scrollIndex() {

@@ -21,6 +21,9 @@ const Text = styled.h3`
    margin: 0 0 0 4px;
    font-size: 14px;
    color: ${props => props.highlighted && 'white'};
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
 `;
 
 const Image = styled.img`

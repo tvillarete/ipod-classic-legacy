@@ -23,7 +23,7 @@ class MusicView extends Component {
          name: 'Music',
          viewType: "split",
          preview: 'music',
-         sections: [Views.CoverFlow, Views.Artists /*, Views.Albums */],
+         sections: [Views.CoverFlow, Views.Artists, Views.Albums ],
       };
    }
 

@@ -15,6 +15,11 @@ const Container = styled.div`
   height: 14em;
   width: 14em;
   margin: 2.5em auto;
+
+  @media screen and (max-height: 640px) {
+    margin: 0 auto;
+    margin-top: 4vh;
+  }
 `;
 
 const CenterButton = styled.div`

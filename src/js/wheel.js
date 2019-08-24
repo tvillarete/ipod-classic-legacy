@@ -64,7 +64,8 @@ class Wheel extends Component {
     this.state = {
       count: 0,
       viewStack: props.viewState.viewStack,
-      tempScrollIndex: null
+      tempScrollIndex: null,
+      scrolling: false
     };
   }
 
@@ -163,10 +164,13 @@ class Wheel extends Component {
       this.lastMove = e;
     });
     scrollWheel.addEventListener("mouseup", e => {
-      if (this.state.tempScrollIndex === this.scrollIndex) {
+      if (
+        this.state.tempScrollIndex === this.scrollIndex &&
+        !this.state.scrolling
+      ) {
         this.handleWheelClick(e);
       }
-      this.setState({ tempScrollIndex: null });
+      this.setState({ tempScrollIndex: null, scrolling: false });
     });
 
     scrollWheel.addEventListener("touchend", e => {
